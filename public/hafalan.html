@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Data Hafalan Siswa</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .header {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            .header h1 {
+                color: #667eea;
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .header p {
+                color: #666;
+                font-size: 1.1em;
+            }
+
+            .filter-section {
+                background: white;
+                padding: 25px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                margin-bottom: 30px;
+            }
+
+            .filter-section label {
+                display: block;
+                margin-bottom: 10px;
+                color: #333;
+                font-weight: 600;
+                font-size: 1.1em;
+            }
+
+            .filter-section select {
+                width: 100%;
+                padding: 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 1em;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: white;
+            }
+
+            .filter-section select:hover {
+                border-color: #667eea;
+            }
+
+            .filter-section select:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            .loading {
+                text-align: center;
+                padding: 40px;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                display: none;
+            }
+
+            .loading.active {
+                display: block;
+            }
+
+            .loading-spinner {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #667eea;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 20px;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .students-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 25px;
+                display: none;
+            }
+
+            .students-grid.active {
+                display: grid;
+            }
+
+            .student-card {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .student-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            }
+
+            .student-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 25px;
+            }
+
+            .student-header h3 {
+                font-size: 1.5em;
+                margin-bottom: 5px;
+            }
+
+            .student-header p {
+                opacity: 0.9;
+                font-size: 0.95em;
+            }
+
+            .student-info {
+                padding: 20px;
+            }
+
+            .info-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+            .info-label {
+                color: #666;
+                font-weight: 600;
+            }
+
+            .info-value {
+                color: #333;
+            }
+
+            .detail-button {
+                width: 100%;
+                padding: 15px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 0;
+                cursor: pointer;
+                font-size: 1em;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .detail-button:hover {
+                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            }
+
+            .detail-button.active {
+                background: #f44336;
+            }
+
+            .hafalan-detail {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                background: #f8f9fa;
+            }
+
+            .hafalan-detail.active {
+                max-height: 2000px;
+            }
+
+            .hafalan-content {
+                padding: 20px;
+            }
+
+            .hafalan-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .stat-box {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .stat-number {
+                font-size: 2em;
+                font-weight: bold;
+                color: #667eea;
+            }
+
+            .stat-label {
+                font-size: 0.85em;
+                color: #666;
+                margin-top: 5px;
+            }
+
+            .hafalan-list {
+                display: grid;
+                gap: 15px;
+            }
+
+            .hafalan-item {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                border-left: 4px solid #667eea;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .hafalan-item.lancar {
+                border-left-color: #4caf50;
+            }
+
+            .hafalan-item.perlu_bimbingan {
+                border-left-color: #ff9800;
+            }
+
+            .hafalan-item.mengulang {
+                border-left-color: #f44336;
+            }
+
+            .hafalan-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .surah-name {
+                font-weight: bold;
+                color: #333;
+                font-size: 1.1em;
+            }
+
+            .status-badge {
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 0.85em;
+                font-weight: 600;
+                color: white;
+            }
+
+            .status-badge.lancar {
+                background: #4caf50;
+            }
+
+            .status-badge.perlu_bimbingan {
+                background: #ff9800;
+            }
+
+            .status-badge.mengulang {
+                background: #f44336;
+            }
+
+            .hafalan-info {
+                color: #666;
+                font-size: 0.9em;
+                margin-top: 5px;
+            }
+
+            .hafalan-guru {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid #f0f0f0;
+                font-size: 0.85em;
+                color: #888;
+            }
+
+            .no-data {
+                text-align: center;
+                padding: 60px 20px;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                display: none;
+            }
+
+            .no-data.active {
+                display: block;
+            }
+
+            .no-data-icon {
+                font-size: 5em;
+                margin-bottom: 20px;
+            }
+
+            .no-data h3 {
+                color: #333;
+                font-size: 1.5em;
+                margin-bottom: 10px;
+            }
+
+            .no-data p {
+                color: #666;
+            }
+
+            .empty-hafalan {
+                text-align: center;
+                padding: 40px;
+                color: #999;
+            }
+
+            .empty-hafalan-icon {
+                font-size: 3em;
+                margin-bottom: 15px;
+            }
+
+            @media (max-width: 768px) {
+                .students-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .hafalan-stats {
+                    grid-template-columns: 1fr;
+                }
+
+                .header h1 {
+                    font-size: 1.8em;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>📖 Data Hafalan Siswa</h1>
+                <p>Sistem Monitoring Hafalan Al-Qur'an</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <label for="kelasSelect">🎓 Pilih Kelas:</label>
+                <select id="kelasSelect">
+                    <option value="">-- Pilih Kelas --</option>
+                </select>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+
+            <!-- No Data -->
+            <div class="no-data" id="noData">
+                <div class="no-data-icon">📚</div>
+                <h3>Belum Ada Kelas Dipilih</h3>
+                <p>
+                    Silakan pilih kelas terlebih dahulu untuk melihat data siswa
+                </p>
+            </div>
+
+            <!-- Students Grid -->
+            <div class="students-grid" id="studentsGrid"></div>
+        </div>
+
+        <script>
+            const API_BASE_URL = "http://localhost:8000/api";
+            const kelasSelect = document.getElementById("kelasSelect");
+            const loading = document.getElementById("loading");
+            const noData = document.getElementById("noData");
+            const studentsGrid = document.getElementById("studentsGrid");
+
+            // Daftar nama Surah (1-114)
+            const surahNames = [
+                "Al-Fatihah",
+                "Al-Baqarah",
+                "Ali 'Imran",
+                "An-Nisa",
+                "Al-Ma'idah",
+                "Al-An'am",
+                "Al-A'raf",
+                "Al-Anfal",
+                "At-Taubah",
+                "Yunus",
+                "Hud",
+                "Yusuf",
+                "Ar-Ra'd",
+                "Ibrahim",
+                "Al-Hijr",
+                "An-Nahl",
+                "Al-Isra",
+                "Al-Kahf",
+                "Maryam",
+                "Taha",
+                "Al-Anbya",
+                "Al-Hajj",
+                "Al-Mu'minun",
+                "An-Nur",
+                "Al-Furqan",
+                "Ash-Shu'ara",
+                "An-Naml",
+                "Al-Qasas",
+                "Al-'Ankabut",
+                "Ar-Rum",
+                "Luqman",
+                "As-Sajdah",
+                "Al-Ahzab",
+                "Saba",
+                "Fatir",
+                "Ya-Sin",
+                "As-Saffat",
+                "Sad",
+                "Az-Zumar",
+                "Ghafir",
+                "Fussilat",
+                "Ash-Shuraa",
+                "Az-Zukhruf",
+                "Ad-Dukhan",
+                "Al-Jathiyah",
+                "Al-Ahqaf",
+                "Muhammad",
+                "Al-Fath",
+                "Al-Hujurat",
+                "Qaf",
+                "Adh-Dhariyat",
+                "At-Tur",
+                "An-Najm",
+                "Al-Qamar",
+                "Ar-Rahman",
+                "Al-Waqi'ah",
+                "Al-Hadid",
+                "Al-Mujadila",
+                "Al-Hashr",
+                "Al-Mumtahanah",
+                "As-Saf",
+                "Al-Jumu'ah",
+                "Al-Munafiqun",
+                "At-Taghabun",
+                "At-Talaq",
+                "At-Tahrim",
+                "Al-Mulk",
+                "Al-Qalam",
+                "Al-Haqqah",
+                "Al-Ma'arij",
+                "Nuh",
+                "Al-Jinn",
+                "Al-Muzzammil",
+                "Al-Muddaththir",
+                "Al-Qiyamah",
+                "Al-Insan",
+                "Al-Mursalat",
+                "An-Naba",
+                "An-Nazi'at",
+                "Abasa",
+                "'Adiyat",
+                "At-Takwir",
+                "Al-Infitar",
+                "Al-Mutaffifin",
+                "Al-Inshiqaq",
+                "Al-Buruj",
+                "At-Tariq",
+                "Al-A'la",
+                "Al-Ghashiyah",
+                "Al-Fajr",
+                "Al-Balad",
+                "Ash-Shams",
+                "Al-Lail",
+                "Ad-Duhaa",
+                "Ash-Sharh",
+                "At-Tin",
+                "Al-'Alaq",
+                "Al-Qadr",
+                "Al-Bayyinah",
+                "Az-Zalzalah",
+                "Al-'Adiyat",
+                "Al-Qari'ah",
+                "At-Takathur",
+                "Al-'Asr",
+                "Al-Humazah",
+                "Al-Fil",
+                "Quraish",
+                "Al-Ma'un",
+                "Al-Kauthar",
+                "Al-Kafirun",
+                "An-Nasr",
+                "Al-Masad",
+                "Al-Ikhlas",
+                "Al-Falaq",
+                "An-Nas",
+            ];
+
+            // Load kelas list on page load
+            async function loadKelasList() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/hafalan`);
+                    const data = await response.json();
+
+                    if (data.success && data.data.data) {
+                        // Extract unique kelas from hafalan data
+                        const kelasSet = new Set();
+                        data.data.data.forEach((hafalan) => {
+                            if (hafalan.siswa && hafalan.siswa.kelas) {
+                                kelasSet.add(
+                                    JSON.stringify({
+                                        id: hafalan.siswa.kelas.id,
+                                        nama: hafalan.siswa.kelas.nama_kelas,
+                                    })
+                                );
+                            }
+                        });
+
+                        const kelasList = Array.from(kelasSet).map((k) =>
+                            JSON.parse(k)
+                        );
+                        kelasList.sort((a, b) => a.nama.localeCompare(b.nama));
+
+                        kelasList.forEach((kelas) => {
+                            const option = document.createElement("option");
+                            option.value = kelas.id;
+                            option.textContent = kelas.nama;
+                            kelasSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error loading kelas:", error);
+                }
+            }
+
+            // Get surah name by ID
+            function getSurahName(surahId) {
+                return surahNames[surahId - 1] || `Surah ${surahId}`;
+            }
+
+            // Format date
+            function formatDate(dateString) {
+                const options = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
+                return new Date(dateString).toLocaleDateString(
+                    "id-ID",
+                    options
+                );
+            }
+
+            // Format status text
+            function formatStatus(status) {
+                const statusMap = {
+                    lancar: "Lancar",
+                    perlu_bimbingan: "perlu_bimbingan",
+                    mengulang: "Mengulang",
+                };
+                return statusMap[status] || status;
+            }
+
+            // Load students by kelas
+            async function loadStudentsByKelas(kelasId) {
+                loading.classList.add("active");
+                noData.classList.remove("active");
+                studentsGrid.classList.remove("active");
+                studentsGrid.innerHTML = "";
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/hafalan?kelas_id=${kelasId}&per_page=100`
+                    );
+                    const data = await response.json();
+
+                    if (data.success && data.data.data) {
+                        // Group hafalan by siswa
+                        const siswaMap = new Map();
+
+                        data.data.data.forEach((hafalan) => {
+                            if (hafalan.siswa) {
+                                const siswaId = hafalan.siswa.id;
+
+                                if (!siswaMap.has(siswaId)) {
+                                    siswaMap.set(siswaId, {
+                                        siswa: hafalan.siswa,
+                                        hafalan: [],
+                                    });
+                                }
+
+                                siswaMap.get(siswaId).hafalan.push(hafalan);
+                            }
+                        });
+
+                        if (siswaMap.size === 0) {
+                            noData.querySelector("h3").textContent =
+                                "Tidak Ada Data Siswa";
+                            noData.querySelector("p").textContent =
+                                "Belum ada siswa di kelas ini";
+                            noData.classList.add("active");
+                        } else {
+                            // Render student cards
+                            siswaMap.forEach(({ siswa, hafalan }) => {
+                                const card = createStudentCard(siswa, hafalan);
+                                studentsGrid.appendChild(card);
+                            });
+
+                            studentsGrid.classList.add("active");
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error loading students:", error);
+                    alert("Terjadi kesalahan saat memuat data");
+                } finally {
+                    loading.classList.remove("active");
+                }
+            }
+
+            // Create student card
+            function createStudentCard(siswa, hafalanList) {
+                const card = document.createElement("div");
+                card.className = "student-card";
+
+                // Calculate statistics
+                const stats = {
+                    total: hafalanList.length,
+                    lancar: hafalanList.filter((h) => h.status === "lancar")
+                        .length,
+                    perlu_bimbingan: hafalanList.filter(
+                        (h) => h.status === "perlu_bimbingan"
+                    ).length,
+                    mengulang: hafalanList.filter(
+                        (h) => h.status === "mengulang"
+                    ).length,
+                };
+
+                card.innerHTML = `
+                <div class="student-header">
+                    <h3>${siswa.nama}</h3>
+                    <p>NIS: ${siswa.nis}</p>
+                </div>
+                <div class="student-info">
+                    <div class="info-item">
+                        <span class="info-label">Jenis Kelamin</span>
+                        <span class="info-value">${
+                            siswa.jenis_kelamin === "L"
+                                ? "Laki-laki"
+                                : "Perempuan"
+                        }</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Tanggal Lahir</span>
+                        <span class="info-value">${formatDate(
+                            siswa.tanggal_lahir
+                        )}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Kelas</span>
+                        <span class="info-value">${
+                            siswa.kelas ? siswa.kelas.nama_kelas : "-"
+                        }</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Hafalan</span>
+                        <span class="info-value">${stats.total} Hafalan</span>
+                    </div>
+                </div>
+                <button class="detail-button" onclick="toggleHafalan(this)">
+                    📋 Lihat Detail Hafalan
+                </button>
+                <div class="hafalan-detail">
+                    <div class="hafalan-content">
+                        ${
+                            hafalanList.length > 0
+                                ? `
+                            <div class="hafalan-stats">
+                                <div class="stat-box">
+                                    <div class="stat-number">${
+                                        stats.lancar
+                                    }</div>
+                                    <div class="stat-label">Lancar</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-number">${
+                                        stats.perlu_bimbingan
+                                    }</div>
+                                    <div class="stat-label">perlu_bimbingan</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-number">${
+                                        stats.mengulang
+                                    }</div>
+                                    <div class="stat-label">Mengulang</div>
+                                </div>
+                            </div>
+                            <div class="hafalan-list">
+                                ${hafalanList
+                                    .map(
+                                        (h) => `
+                                    <div class="hafalan-item ${h.status}">
+                                        <div class="hafalan-header">
+                                            <span class="surah-name">${getSurahName(
+                                                h.surah_id
+                                            )}</span>
+                                            <span class="status-badge ${
+                                                h.status
+                                            }">${formatStatus(h.status)}</span>
+                                        </div>
+                                        <div class="hafalan-info">
+                                            📖 Ayat ${h.ayat_dari} - ${
+                                            h.ayat_sampai
+                                        } | 
+                                            📅 ${formatDate(h.tanggal)}
+                                        </div>
+                                        ${
+                                            h.keterangan
+                                                ? `<div class="hafalan-info">💬 ${h.keterangan}</div>`
+                                                : ""
+                                        }
+                                        ${
+                                            h.guru
+                                                ? `
+                                            <div class="hafalan-guru">
+                                                👨‍🏫 Penguji: ${h.guru.nama}
+                                            </div>
+                                        `
+                                                : ""
+                                        }
+                                    </div>
+                                `
+                                    )
+                                    .join("")}
+                            </div>
+                        `
+                                : `
+                            <div class="empty-hafalan">
+                                <div class="empty-hafalan-icon">📚</div>
+                                <p>Belum ada data hafalan</p>
+                            </div>
+                        `
+                        }
+                    </div>
+                </div>
+            `;
+
+                return card;
+            }
+
+            // Toggle hafalan detail
+            function toggleHafalan(button) {
+                const card = button.closest(".student-card");
+                const detail = card.querySelector(".hafalan-detail");
+
+                button.classList.toggle("active");
+                detail.classList.toggle("active");
+
+                if (button.classList.contains("active")) {
+                    button.textContent = "❌ Tutup Detail";
+                } else {
+                    button.textContent = "📋 Lihat Detail Hafalan";
+                }
+            }
+
+            // Event listener for kelas selection
+            kelasSelect.addEventListener("change", (e) => {
+                const kelasId = e.target.value;
+
+                if (kelasId) {
+                    loadStudentsByKelas(kelasId);
+                } else {
+                    studentsGrid.classList.remove("active");
+                    studentsGrid.innerHTML = "";
+                    noData.querySelector("h3").textContent =
+                        "Belum Ada Kelas Dipilih";
+                    noData.querySelector("p").textContent =
+                        "Silakan pilih kelas terlebih dahulu untuk melihat data siswa";
+                    noData.classList.add("active");
+                }
+            });
+
+            // Initialize
+            loadKelasList();
+            noData.classList.add("active");
+        </script>
+    </body>
+</html>
