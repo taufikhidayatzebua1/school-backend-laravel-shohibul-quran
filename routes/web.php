@@ -7,6 +7,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Password reset route untuk email link
+Route::get('/password/reset/{token}', function ($token) {
+    return redirect('/test-reset-password.html?token=' . $token . '&email=' . request('email'));
+})->name('password.reset');
+
 // Health check endpoint untuk monitoring
 Route::get('/health', function () {
     $status = [
