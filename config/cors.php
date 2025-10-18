@@ -24,8 +24,10 @@ return [
         'http://localhost:4200',     // Angular development
         'http://localhost:3000',     // React development
         'http://127.0.0.1:8100',
-        'http://127.0.0.1:5500',
-        'http://localhost',          // General localhost
+        // 'http://127.0.0.1:5500',
+        // 'http://127.0.0.1:8080',
+        // 'http://localhost:8080',
+        // 'http://localhost',          // General localhost
         // Add your production domains here:
         // 'https://yourdomain.com',
         // 'https://app.yourdomain.com',
