@@ -39,18 +39,11 @@ class AuthController extends Controller
 
         $user = User::create($userData);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-        $expiresIn = config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null; // seconds
-        $expiresAt = $expiresIn ? now()->addSeconds($expiresIn)->toIso8601String() : null;
-
         return response()->json([
             'success' => true,
-            'message' => 'User registered successfully',
+            'message' => 'User registered successfully. Please login to continue.',
             'data' => [
                 'user' => new UserResource($user),
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'expires_at' => $expiresAt,
             ]
         ], 201);
     }
