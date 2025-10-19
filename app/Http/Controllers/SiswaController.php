@@ -186,4 +186,156 @@ class SiswaController extends Controller
             'data' => new SiswaResource($siswa)
         ]);
     }
+
+    /**
+     * Create new siswa (Only for tata-usaha, admin, super-admin)
+     */
+    public function store(StoreSiswaRequest $request): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            // Create user account first
+            $user = \App\Models\User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => bcrypt($request->password ?? 'password123'),
+                'role' => 'siswa',
+                'is_active' => true
+            ]);
+
+            // Create siswa record
+            $siswa = Siswa::create([
+                'user_id' => $user->id,
+                'nama' => $request->nama,
+                'nisn' => $request->nisn,
+                'nis' => $request->nis,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+                'nama_ayah' => $request->nama_ayah,
+                'nama_ibu' => $request->nama_ibu,
+                'no_hp_ortu' => $request->no_hp_ortu,
+                'kelas_id' => $request->kelas_id,
+                'tahun_masuk' => $request->tahun_masuk,
+                'url_photo' => $request->url_photo,
+                'url_cover' => $request->url_cover,
+                'is_active' => $request->is_active ?? true
+            ]);
+
+            DB::commit();
+
+            $siswa->load(['user', 'kelas']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil dibuat',
+                'data' => new SiswaResource($siswa)
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update siswa (Only for tata-usaha, admin, super-admin)
+     */
+    public function update(UpdateSiswaRequest $request, string $id): JsonResponse
+    {
+        try {
+            $siswa = Siswa::with('user')->find($id);
+
+            if (!$siswa) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data siswa tidak ditemukan'
+                ], 404);
+            }
+
+            DB::beginTransaction();
+
+            // Update siswa data
+            $siswa->update($request->only([
+                'nama', 'nisn', 'nis', 'jenis_kelamin', 'tempat_lahir',
+                'tanggal_lahir', 'alamat', 'no_hp', 'nama_ayah', 'nama_ibu',
+                'no_hp_ortu', 'kelas_id', 'tahun_masuk', 'url_photo',
+                'url_cover', 'is_active'
+            ]));
+
+            // Update user data if provided
+            if ($siswa->user && ($request->has('username') || $request->has('email') || $request->has('password'))) {
+                $userData = [];
+                if ($request->filled('username')) $userData['username'] = $request->username;
+                if ($request->filled('email')) $userData['email'] = $request->email;
+                if ($request->filled('password')) $userData['password'] = bcrypt($request->password);
+                
+                $siswa->user->update($userData);
+            }
+
+            DB::commit();
+
+            $siswa->load(['user', 'kelas']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil diupdate',
+                'data' => new SiswaResource($siswa)
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete siswa (Only for tata-usaha, admin, super-admin)
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $siswa = Siswa::with('user')->find($id);
+
+            if (!$siswa) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data siswa tidak ditemukan'
+                ], 404);
+            }
+
+            DB::beginTransaction();
+
+            // Soft delete siswa
+            $siswa->delete();
+
+            // Also soft delete the user account
+            if ($siswa->user) {
+                $siswa->user->delete();
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil dihapus'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Test Authorization RBAC</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                padding: 30px;
+            }
+            h1 {
+                color: #c0392b;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            .subtitle {
+                text-align: center;
+                color: #666;
+                margin-bottom: 30px;
+                font-size: 14px;
+            }
+            .test-section {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                border-left: 4px solid #3498db;
+            }
+            .test-section h2 {
+                color: #2c3e50;
+                margin-bottom: 15px;
+                font-size: 1.1rem;
+            }
+            .role-selector {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            .role-btn {
+                padding: 15px;
+                border: 2px solid #3498db;
+                background: white;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: 500;
+                font-size: 14px;
+            }
+            .role-btn:hover {
+                background: #3498db;
+                color: white;
+            }
+            .role-btn.active {
+                background: #3498db;
+                color: white;
+                border-color: #2980b9;
+            }
+            .test-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 15px;
+                margin-top: 20px;
+            }
+            .test-card {
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                padding: 15px;
+                background: white;
+            }
+            .test-card h3 {
+                color: #495057;
+                margin-bottom: 10px;
+                font-size: 1rem;
+            }
+            .test-card .endpoint {
+                font-family: monospace;
+                background: #282c34;
+                color: #61dafb;
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+            .test-card .expected {
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+            .expected.success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .expected.fail {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            button {
+                background: #3498db;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 13px;
+                font-weight: 500;
+                width: 100%;
+                transition: background 0.3s;
+            }
+            button:hover {
+                background: #2980b9;
+            }
+            button:disabled {
+                background: #95a5a6;
+                cursor: not-allowed;
+            }
+            .result {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                display: none;
+            }
+            .result.show {
+                display: block;
+            }
+            .result.pass {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .result.fail {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            .summary {
+                background: #e8f4f8;
+                padding: 20px;
+                border-radius: 8px;
+                margin-top: 30px;
+                border-left: 4px solid #3498db;
+            }
+            .summary h2 {
+                color: #2c3e50;
+                margin-bottom: 15px;
+            }
+            .summary-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                margin-top: 15px;
+            }
+            .stat-card {
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .stat-card .number {
+                font-size: 2rem;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .stat-card.total .number {
+                color: #3498db;
+            }
+            .stat-card.pass .number {
+                color: #27ae60;
+            }
+            .stat-card.fail .number {
+                color: #e74c3c;
+            }
+            .badge {
+                display: inline-block;
+                padding: 3px 8px;
+                border-radius: 3px;
+                font-size: 11px;
+                font-weight: 600;
+                margin-left: 5px;
+            }
+            .badge-admin {
+                background: #27ae60;
+                color: white;
+            }
+            .badge-read {
+                background: #3498db;
+                color: white;
+            }
+            .badge-restricted {
+                background: #e74c3c;
+                color: white;
+            }
+            pre {
+                background: #282c34;
+                color: #abb2bf;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+                font-size: 11px;
+                margin-top: 5px;
+                max-height: 150px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔐 Test Authorization & RBAC</h1>
+            <p class="subtitle">
+                Testing Role-Based Access Control for Guru, Siswa, and Orang Tua
+                endpoints
+            </p>
+
+            <!-- Role Selector -->
+            <div class="test-section">
+                <h2>1️⃣ Select Test User Role</h2>
+                <div class="role-selector">
+                    <button
+                        class="role-btn"
+                        onclick="selectRole('superadmin', 'super-admin')"
+                    >
+                        Super Admin
+                        <span class="badge badge-admin">FULL ACCESS</span>
+                    </button>
+                    <button
+                        class="role-btn"
+                        onclick="selectRole('admin', 'admin')"
+                    >
+                        Admin <span class="badge badge-admin">FULL ACCESS</span>
+                    </button>
+                    <button
+                        class="role-btn"
+                        onclick="selectRole('tata.usaha', 'tata-usaha')"
+                    >
+                        Tata Usaha
+                        <span class="badge badge-admin">FULL ACCESS</span>
+                    </button>
+                    <button
+                        class="role-btn"
+                        onclick="selectRole('ahmad.suryadi', 'guru')"
+                    >
+                        Guru <span class="badge badge-read">READ ONLY</span>
+                    </button>
+                    <button
+                        class="role-btn"
+                        onclick="selectRole('kepala.sekolah', 'kepala-sekolah')"
+                    >
+                        Kepala Sekolah
+                        <span class="badge badge-read">READ ONLY</span>
+                    </button>
+                </div>
+                <div
+                    id="loginStatus"
+                    style="
+                        padding: 10px;
+                        background: #fff3cd;
+                        border-radius: 5px;
+                        display: none;
+                    "
+                >
+                    <strong>Current User:</strong>
+                    <span id="currentUsername">-</span> |
+                    <strong>Role:</strong> <span id="currentRole">-</span> |
+                    <strong>Token:</strong>
+                    <span
+                        id="tokenPreview"
+                        style="font-family: monospace; font-size: 11px"
+                        >-</span
+                    >
+                </div>
+            </div>
+
+            <!-- Test Cases -->
+            <div class="test-section">
+                <h2>2️⃣ Run Authorization Tests</h2>
+                <button
+                    onclick="runAllTests()"
+                    style="margin-bottom: 20px; background: #e74c3c"
+                >
+                    🚀 Run All Tests
+                </button>
+
+                <div class="test-grid">
+                    <!-- READ Tests (Should always pass for authenticated users) -->
+                    <div class="test-card">
+                        <h3>
+                            📋 List Guru
+                            <span class="badge badge-read">READ</span>
+                        </h3>
+                        <div class="endpoint">GET /api/v1/guru</div>
+                        <div class="expected success" id="expected-list-guru">
+                            ✅ Should: 200 OK for all roles
+                        </div>
+                        <button onclick="testEndpoint('list-guru')">
+                            Test
+                        </button>
+                        <div class="result" id="result-list-guru"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            📋 List Siswa
+                            <span class="badge badge-read">READ</span>
+                        </h3>
+                        <div class="endpoint">GET /api/v1/siswa</div>
+                        <div class="expected success" id="expected-list-siswa">
+                            ✅ Should: 200 OK for all roles
+                        </div>
+                        <button onclick="testEndpoint('list-siswa')">
+                            Test
+                        </button>
+                        <div class="result" id="result-list-siswa"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            📋 List Orang Tua
+                            <span class="badge badge-read">READ</span>
+                        </h3>
+                        <div class="endpoint">GET /api/v1/orang-tua</div>
+                        <div
+                            class="expected success"
+                            id="expected-list-orang-tua"
+                        >
+                            ✅ Should: 200 OK for all roles
+                        </div>
+                        <button onclick="testEndpoint('list-orang-tua')">
+                            Test
+                        </button>
+                        <div class="result" id="result-list-orang-tua"></div>
+                    </div>
+
+                    <!-- CREATE Tests (Should fail for non-admin roles) -->
+                    <div class="test-card">
+                        <h3>
+                            ➕ Create Guru
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">POST /api/v1/guru</div>
+                        <div class="expected" id="expected-create-guru">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('create-guru')">
+                            Test
+                        </button>
+                        <div class="result" id="result-create-guru"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            ➕ Create Siswa
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">POST /api/v1/siswa</div>
+                        <div class="expected" id="expected-create-siswa">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('create-siswa')">
+                            Test
+                        </button>
+                        <div class="result" id="result-create-siswa"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            ➕ Create Orang Tua
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">POST /api/v1/orang-tua</div>
+                        <div class="expected" id="expected-create-orang-tua">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('create-orang-tua')">
+                            Test
+                        </button>
+                        <div class="result" id="result-create-orang-tua"></div>
+                    </div>
+
+                    <!-- UPDATE Tests (Should fail for non-admin roles) -->
+                    <div class="test-card">
+                        <h3>
+                            ✏️ Update Guru
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">PUT /api/v1/guru/1</div>
+                        <div class="expected" id="expected-update-guru">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('update-guru')">
+                            Test
+                        </button>
+                        <div class="result" id="result-update-guru"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            ✏️ Update Siswa
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">PUT /api/v1/siswa/1</div>
+                        <div class="expected" id="expected-update-siswa">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('update-siswa')">
+                            Test
+                        </button>
+                        <div class="result" id="result-update-siswa"></div>
+                    </div>
+
+                    <div class="test-card">
+                        <h3>
+                            ✏️ Update Orang Tua
+                            <span class="badge badge-restricted"
+                                >RESTRICTED</span
+                            >
+                        </h3>
+                        <div class="endpoint">PUT /api/v1/orang-tua/1</div>
+                        <div class="expected" id="expected-update-orang-tua">
+                            Checking...
+                        </div>
+                        <button onclick="testEndpoint('update-orang-tua')">
+                            Test
+                        </button>
+                        <div class="result" id="result-update-orang-tua"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="summary" style="display: none" id="summary">
+                <h2>📊 Test Summary</h2>
+                <div class="summary-stats">
+                    <div class="stat-card total">
+                        <div class="number" id="totalTests">0</div>
+                        <div>Total Tests</div>
+                    </div>
+                    <div class="stat-card pass">
+                        <div class="number" id="passTests">0</div>
+                        <div>Passed</div>
+                    </div>
+                    <div class="stat-card fail">
+                        <div class="number" id="failTests">0</div>
+                        <div>Failed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentToken = "";
+            let currentUsername = "";
+            let currentRole = "";
+            const baseUrl = "http://localhost/api/v1";
+
+            // Admin roles that should have full access
+            const adminRoles = ["super-admin", "admin", "tata-usaha"];
+
+            async function selectRole(username, role) {
+                // Highlight selected role
+                document.querySelectorAll(".role-btn").forEach((btn) => {
+                    btn.classList.remove("active");
+                });
+                event.target.closest(".role-btn").classList.add("active");
+
+                // Login
+                try {
+                    const response = await fetch(`${baseUrl}/auth/login`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            password: "password123",
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success && data.data.token) {
+                        currentToken = data.data.token;
+                        currentUsername = username;
+                        currentRole = role;
+
+                        document.getElementById("loginStatus").style.display =
+                            "block";
+                        document.getElementById("currentUsername").textContent =
+                            username;
+                        document.getElementById("currentRole").textContent =
+                            role;
+                        document.getElementById("tokenPreview").textContent =
+                            currentToken.substring(0, 30) + "...";
+
+                        // Update expected results based on role
+                        updateExpectedResults();
+
+                        alert(
+                            `✅ Berhasil login sebagai ${username} (${role})`
+                        );
+                    } else {
+                        alert("❌ Login gagal: " + data.message);
+                    }
+                } catch (error) {
+                    alert("❌ Error: " + error.message);
+                }
+            }
+
+            function updateExpectedResults() {
+                const isAdmin = adminRoles.includes(currentRole);
+
+                // UPDATE expected results for write operations
+                [
+                    "create-guru",
+                    "create-siswa",
+                    "create-orang-tua",
+                    "update-guru",
+                    "update-siswa",
+                    "update-orang-tua",
+                ].forEach((testId) => {
+                    const expectedEl = document.getElementById(
+                        `expected-${testId}`
+                    );
+                    if (isAdmin) {
+                        expectedEl.className = "expected success";
+                        expectedEl.textContent =
+                            "✅ Should: 201/200 OK (Admin access)";
+                    } else {
+                        expectedEl.className = "expected fail";
+                        expectedEl.textContent =
+                            "❌ Should: 403 Forbidden (No permission)";
+                    }
+                });
+            }
+
+            async function testEndpoint(testId) {
+                if (!currentToken) {
+                    alert("⚠️ Silakan login terlebih dahulu!");
+                    return;
+                }
+
+                const resultEl = document.getElementById(`result-${testId}`);
+                resultEl.textContent = "⏳ Testing...";
+                resultEl.className = "result show";
+
+                const isAdmin = adminRoles.includes(currentRole);
+                let url, method, body;
+
+                // Define test endpoints
+                const tests = {
+                    "list-guru": { url: `${baseUrl}/guru`, method: "GET" },
+                    "list-siswa": { url: `${baseUrl}/siswa`, method: "GET" },
+                    "list-orang-tua": {
+                        url: `${baseUrl}/orang-tua`,
+                        method: "GET",
+                    },
+                    "create-guru": {
+                        url: `${baseUrl}/guru`,
+                        method: "POST",
+                        body: {
+                            nama: "Test Guru " + Date.now(),
+                            username: "test.guru." + Date.now(),
+                            email: `test.guru.${Date.now()}@test.com`,
+                            password: "password123",
+                            role: "guru",
+                        },
+                    },
+                    "create-siswa": {
+                        url: `${baseUrl}/siswa`,
+                        method: "POST",
+                        body: {
+                            nama: "Test Siswa " + Date.now(),
+                            username: "test.siswa." + Date.now(),
+                            email: `test.siswa.${Date.now()}@test.com`,
+                            password: "password123",
+                        },
+                    },
+                    "create-orang-tua": {
+                        url: `${baseUrl}/orang-tua`,
+                        method: "POST",
+                        body: {
+                            nama: "Test Orang Tua " + Date.now(),
+                            username: "test.ortu." + Date.now(),
+                            email: `test.ortu.${Date.now()}@test.com`,
+                            password: "password123",
+                        },
+                    },
+                    "update-guru": {
+                        url: `${baseUrl}/guru/1`,
+                        method: "PUT",
+                        body: { alamat: "Test Update " + Date.now() },
+                    },
+                    "update-siswa": {
+                        url: `${baseUrl}/siswa/1`,
+                        method: "PUT",
+                        body: { alamat: "Test Update " + Date.now() },
+                    },
+                    "update-orang-tua": {
+                        url: `${baseUrl}/orang-tua/1`,
+                        method: "PUT",
+                        body: { alamat: "Test Update " + Date.now() },
+                    },
+                };
+
+                const test = tests[testId];
+
+                try {
+                    const options = {
+                        method: test.method,
+                        headers: {
+                            Authorization: `Bearer ${currentToken}`,
+                            Accept: "application/json",
+                        },
+                    };
+
+                    if (test.body) {
+                        options.headers["Content-Type"] = "application/json";
+                        options.body = JSON.stringify(test.body);
+                    }
+
+                    const response = await fetch(test.url, options);
+                    const data = await response.json();
+
+                    // Determine if test passed
+                    let passed = false;
+                    let message = "";
+
+                    if (testId.startsWith("list-")) {
+                        // READ operations should always succeed
+                        passed = response.status === 200;
+                        message = passed
+                            ? `✅ PASS: Got 200 OK (${
+                                  data.data?.data?.length || 0
+                              } records)`
+                            : `❌ FAIL: Expected 200, got ${response.status}`;
+                    } else {
+                        // WRITE operations
+                        if (isAdmin) {
+                            // Admin should succeed
+                            passed =
+                                response.status === 200 ||
+                                response.status === 201;
+                            message = passed
+                                ? `✅ PASS: Admin can modify (${response.status})`
+                                : `❌ FAIL: Admin should succeed but got ${response.status}`;
+                        } else {
+                            // Non-admin should get 403
+                            passed = response.status === 403;
+                            message = passed
+                                ? `✅ PASS: Correctly denied (403 Forbidden)`
+                                : `❌ FAIL: Expected 403, got ${response.status}`;
+                        }
+                    }
+
+                    resultEl.className = `result show ${
+                        passed ? "pass" : "fail"
+                    }`;
+                    resultEl.innerHTML = `
+                    ${message}<br>
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Message:</strong> ${data.message || "N/A"}
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                } catch (error) {
+                    resultEl.className = "result show fail";
+                    resultEl.textContent = `❌ ERROR: ${error.message}`;
+                }
+            }
+
+            async function runAllTests() {
+                if (!currentToken) {
+                    alert("⚠️ Silakan login terlebih dahulu!");
+                    return;
+                }
+
+                const tests = [
+                    "list-guru",
+                    "list-siswa",
+                    "list-orang-tua",
+                    "create-guru",
+                    "create-siswa",
+                    "create-orang-tua",
+                    "update-guru",
+                    "update-siswa",
+                    "update-orang-tua",
+                ];
+
+                for (const testId of tests) {
+                    await testEndpoint(testId);
+                    await new Promise((resolve) => setTimeout(resolve, 500)); // Delay between tests
+                }
+
+                // Show summary
+                setTimeout(() => {
+                    const results = document.querySelectorAll(".result.show");
+                    const total = results.length;
+                    const passed =
+                        document.querySelectorAll(".result.pass").length;
+                    const failed = total - passed;
+
+                    document.getElementById("summary").style.display = "block";
+                    document.getElementById("totalTests").textContent = total;
+                    document.getElementById("passTests").textContent = passed;
+                    document.getElementById("failTests").textContent = failed;
+
+                    document
+                        .getElementById("summary")
+                        .scrollIntoView({ behavior: "smooth" });
+                }, 1000);
+            }
+        </script>
+    </body>
+</html>

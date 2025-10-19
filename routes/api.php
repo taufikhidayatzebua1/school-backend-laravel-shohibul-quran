@@ -118,28 +118,46 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
 
             // Siswa routes (with authentication and role check)
             Route::prefix('siswa')->group(function () {
+                // Read access for all authenticated users with base roles
                 Route::get('/', [SiswaController::class, 'index']);
                 Route::get('/{id}', [SiswaController::class, 'show']);
                 Route::get('/{id}/hafalan', [SiswaController::class, 'getHafalan']);
                 Route::get('/{id}/statistics', [SiswaController::class, 'getStatistics']);
+                
+                // Write access only for tata-usaha, admin, super-admin
+                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                    Route::post('/', [SiswaController::class, 'store']);
+                    Route::put('/{id}', [SiswaController::class, 'update']);
+                    Route::delete('/{id}', [SiswaController::class, 'destroy']);
+                });
             });
 
             // Guru routes (with authentication and role check)
             Route::prefix('guru')->group(function () {
+                // Read access for all authenticated users with base roles
                 Route::get('/', [GuruController::class, 'index']);
-                Route::post('/', [GuruController::class, 'store']);
                 Route::get('/{id}', [GuruController::class, 'show']);
-                Route::put('/{id}', [GuruController::class, 'update']);
-                Route::delete('/{id}', [GuruController::class, 'destroy']);
+                
+                // Write access only for tata-usaha, admin, super-admin
+                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                    Route::post('/', [GuruController::class, 'store']);
+                    Route::put('/{id}', [GuruController::class, 'update']);
+                    Route::delete('/{id}', [GuruController::class, 'destroy']);
+                });
             });
 
             // Orang Tua routes (with authentication and role check)
             Route::prefix('orang-tua')->group(function () {
+                // Read access for all authenticated users with base roles
                 Route::get('/', [OrangTuaController::class, 'index']);
-                Route::post('/', [OrangTuaController::class, 'store']);
                 Route::get('/{id}', [OrangTuaController::class, 'show']);
-                Route::put('/{id}', [OrangTuaController::class, 'update']);
-                Route::delete('/{id}', [OrangTuaController::class, 'destroy']);
+                
+                // Write access only for tata-usaha, admin, super-admin
+                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                    Route::post('/', [OrangTuaController::class, 'store']);
+                    Route::put('/{id}', [OrangTuaController::class, 'update']);
+                    Route::delete('/{id}', [OrangTuaController::class, 'destroy']);
+                });
             });
         });
     });
