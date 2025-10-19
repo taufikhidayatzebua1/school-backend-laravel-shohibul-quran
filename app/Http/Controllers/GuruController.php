@@ -19,7 +19,7 @@ class GuruController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Guru::with('user');
+        $query = Guru::query();
 
         // Filter by is_active
         if ($request->has('is_active')) {
@@ -108,7 +108,7 @@ class GuruController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data guru berhasil ditambahkan',
-                'data' => new GuruResource($guru->load('user')),
+                'data' => new GuruResource($guru),
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -125,7 +125,7 @@ class GuruController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $guru = Guru::with('user', 'hafalan')->find($id);
+        $guru = Guru::find($id);
 
         if (!$guru) {
             return response()->json([
@@ -202,7 +202,7 @@ class GuruController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data guru berhasil diperbarui',
-                'data' => new GuruResource($guru->fresh('user')),
+                'data' => new GuruResource($guru->fresh()),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
