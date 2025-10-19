@@ -11,11 +11,18 @@ class GuruSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * 
+     * Best Practice:
+     * - Semua guru, wali-kelas, dan kepala-sekolah disimpan di tabel 'guru'
+     * - Role ditentukan di tabel 'users'
+     * - Wali-kelas adalah guru yang juga mengajar, hanya berperan sebagai wali kelas
+     * - Kepala sekolah juga memiliki data di tabel guru untuk konsistensi
      */
     public function run(): void
     {
-        // Buat user untuk guru (10 guru)
+        // Buat user untuk semua guru (termasuk wali-kelas dan kepala-sekolah)
         $users = [
+            // Guru Biasa (5 orang)
             [
                 'name' => 'Budi Santoso',
                 'email' => 'budi.santoso@sekolah.com',
@@ -56,11 +63,13 @@ class GuruSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            
+            // Wali Kelas (5 orang) - Mereka juga guru, tapi punya role wali-kelas
             [
                 'name' => 'Fitria Handayani',
                 'email' => 'fitria.handayani@sekolah.com',
                 'password' => Hash::make('password123'),
-                'role' => 'guru',
+                'role' => 'wali-kelas',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -68,7 +77,7 @@ class GuruSeeder extends Seeder
                 'name' => 'Gunawan Sukarno',
                 'email' => 'gunawan.sukarno@sekolah.com',
                 'password' => Hash::make('password123'),
-                'role' => 'guru',
+                'role' => 'wali-kelas',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -76,7 +85,7 @@ class GuruSeeder extends Seeder
                 'name' => 'Hani Wijayanti',
                 'email' => 'hani.wijayanti@sekolah.com',
                 'password' => Hash::make('password123'),
-                'role' => 'guru',
+                'role' => 'wali-kelas',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -84,7 +93,7 @@ class GuruSeeder extends Seeder
                 'name' => 'Indra Kusuma',
                 'email' => 'indra.kusuma@sekolah.com',
                 'password' => Hash::make('password123'),
-                'role' => 'guru',
+                'role' => 'wali-kelas',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -92,7 +101,17 @@ class GuruSeeder extends Seeder
                 'name' => 'Julia Permatasari',
                 'email' => 'julia.permatasari@sekolah.com',
                 'password' => Hash::make('password123'),
-                'role' => 'guru',
+                'role' => 'wali-kelas',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            
+            // Kepala Sekolah (1 orang) - Juga memiliki data di tabel guru
+            [
+                'name' => 'Dr. Agus Salim, M.Pd',
+                'email' => 'kepala.sekolah@sekolah.com',
+                'password' => Hash::make('password123'),
+                'role' => 'kepala-sekolah',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -104,11 +123,12 @@ class GuruSeeder extends Seeder
 
         // Ambil user_id yang baru dibuat
         $userIds = DB::table('users')
-            ->where('role', 'guru')
+            ->whereIn('role', ['guru', 'wali-kelas', 'kepala-sekolah'])
             ->pluck('id', 'email');
 
-        // Insert data guru
+        // Insert data guru untuk SEMUA (guru biasa, wali-kelas, kepala-sekolah)
         DB::table('guru')->insert([
+            // Guru Biasa
             [
                 'user_id' => $userIds['budi.santoso@sekolah.com'],
                 'nip' => '197505102000031001',
@@ -164,6 +184,8 @@ class GuruSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            
+            // Wali Kelas (mereka juga guru dengan role berbeda)
             [
                 'user_id' => $userIds['fitria.handayani@sekolah.com'],
                 'nip' => '198605182009122001',
@@ -219,6 +241,25 @@ class GuruSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            
+            // Kepala Sekolah (juga punya data di tabel guru)
+            [
+                'user_id' => $userIds['kepala.sekolah@sekolah.com'],
+                'nip' => '196805151990031001',
+                'nama' => 'Dr. Agus Salim, M.Pd',
+                'jenis_kelamin' => 'L',
+                'tanggal_lahir' => '1968-05-15',
+                'alamat' => 'Jl. Pendidikan No. 1, Jakarta',
+                'no_hp' => '081234567899',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
+
+        echo "✓ Seeder berhasil!\n";
+        echo "  - 5 Guru biasa\n";
+        echo "  - 5 Wali Kelas (juga guru, role: wali-kelas)\n";
+        echo "  - 1 Kepala Sekolah (juga guru, role: kepala-sekolah)\n";
+        echo "  - Total: 11 data guru dengan berbagai role\n";
     }
 }

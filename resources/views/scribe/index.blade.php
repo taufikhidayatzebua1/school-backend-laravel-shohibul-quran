@@ -373,7 +373,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>yayasan</code></p>
 Must be one of:
-<ul style="list-style-type: square;"><li><code>siswa</code></li> <li><code>orang-tua</code></li> <li><code>guru</code></li> <li><code>wali_kelas</code></li> <li><code>kepala-sekolah</code></li> <li><code>tata-usaha</code></li> <li><code>yayasan</code></li> <li><code>admin</code></li> <li><code>super-admin</code></li></ul>
+<ul style="list-style-type: square;"><li><code>siswa</code></li> <li><code>orang-tua</code></li> <li><code>guru</code></li> <li><code>wali-kelas</code></li> <li><code>kepala-sekolah</code></li> <li><code>tata-usaha</code></li> <li><code>yayasan</code></li> <li><code>admin</code></li> <li><code>super-admin</code></li></ul>
         </div>
         </form>
 

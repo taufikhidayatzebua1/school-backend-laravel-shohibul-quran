@@ -1,17 +1,16 @@
 name: Endpoints
-description: ''
+description: ""
 endpoints:
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/register
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Register a new user'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Register a new user"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -25,7 +24,7 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: true
         example: b
         type: string
@@ -35,7 +34,7 @@ endpoints:
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: "Must be a valid email address. Must not be greater than 255 characters."
         required: true
         example: zbailey@example.net
         type: string
@@ -45,9 +44,9 @@ endpoints:
         custom: []
       password:
         name: password
-        description: 'Must be at least 8 characters.'
+        description: "Must be at least 8 characters."
         required: true
-        example: '-0pBNvYgxw'
+        example: "-0pBNvYgxw"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -55,7 +54,7 @@ endpoints:
         custom: []
       role:
         name: role
-        description: ''
+        description: ""
         required: true
         example: yayasan
         type: string
@@ -63,7 +62,7 @@ endpoints:
           - siswa
           - orang-tua
           - guru
-          - wali_kelas
+          - wali-kelas
           - kepala-sekolah
           - tata-usaha
           - yayasan
@@ -75,7 +74,7 @@ endpoints:
     cleanBodyParameters:
       name: b
       email: zbailey@example.net
-      password: '-0pBNvYgxw'
+      password: "-0pBNvYgxw"
       role: yayasan
     fileParameters: []
     responses: []
@@ -85,17 +84,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/login
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Login user'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Login user"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -109,7 +107,7 @@ endpoints:
     bodyParameters:
       email:
         name: email
-        description: 'Must be a valid email address.'
+        description: "Must be a valid email address."
         required: true
         example: gbailey@example.net
         type: string
@@ -119,7 +117,7 @@ endpoints:
         custom: []
       password:
         name: password
-        description: ''
+        description: ""
         required: true
         example: architecto
         type: string
@@ -138,17 +136,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/forgot-password
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Send password reset link'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Send password reset link"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -162,7 +159,7 @@ endpoints:
     bodyParameters:
       email:
         name: email
-        description: 'Must be a valid email address. The <code>email</code> of an existing record in the users table.'
+        description: "Must be a valid email address. The <code>email</code> of an existing record in the users table."
         required: true
         example: gbailey@example.net
         type: string
@@ -180,17 +177,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/reset-password
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Reset password'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Reset password"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -204,7 +200,7 @@ endpoints:
     bodyParameters:
       token:
         name: token
-        description: ''
+        description: ""
         required: true
         example: architecto
         type: string
@@ -214,7 +210,7 @@ endpoints:
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address.'
+        description: "Must be a valid email address."
         required: true
         example: zbailey@example.net
         type: string
@@ -224,9 +220,9 @@ endpoints:
         custom: []
       password:
         name: password
-        description: 'Must be at least 8 characters.'
+        description: "Must be at least 8 characters."
         required: true
-        example: '-0pBNvYgxw'
+        example: "-0pBNvYgxw"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -235,7 +231,7 @@ endpoints:
     cleanBodyParameters:
       token: architecto
       email: zbailey@example.net
-      password: '-0pBNvYgxw'
+      password: "-0pBNvYgxw"
     fileParameters: []
     responses: []
     responseFields: []
@@ -244,17 +240,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/public/hafalan
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get hafalan list for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get hafalan list for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -269,17 +264,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 500
+      - status: 500
         content: '{"success":false,"message":"Internal server error."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -289,17 +283,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/public/hafalan/{id}'
+    uri: "api/v1/public/hafalan/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get hafalan detail for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get hafalan detail for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -309,7 +302,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the hafalan.'
+        description: "The ID of the hafalan."
         required: true
         example: 1
         type: integer
@@ -325,17 +318,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 500
+      - status: 500
         content: '{"success":false,"message":"Internal server error."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -345,17 +337,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/public/kelas
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get all kelas for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get all kelas for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -370,17 +361,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 200
+      - status: 200
         content: '{"success":true,"message":"Data kelas berhasil diambil","data":[{"id":1,"nama_kelas":"X IPA 1","tahun_ajaran":"2024\/2025","siswa_count":2},{"id":2,"nama_kelas":"X IPA 2","tahun_ajaran":"2024\/2025","siswa_count":2},{"id":3,"nama_kelas":"XI IPA 1","tahun_ajaran":"2024\/2025","siswa_count":2},{"id":4,"nama_kelas":"XI IPA 2","tahun_ajaran":"2024\/2025","siswa_count":2},{"id":5,"nama_kelas":"XII IPA 1","tahun_ajaran":"2024\/2025","siswa_count":2}]}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -390,17 +380,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/public/kelas/{id}'
+    uri: "api/v1/public/kelas/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get kelas detail for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get kelas detail for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -410,7 +399,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the kela.'
+        description: "The ID of the kela."
         required: true
         example: architecto
         type: string
@@ -426,17 +415,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 404
+      - status: 404
         content: '{"success":false,"message":"Kelas tidak ditemukan"}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -446,17 +434,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/public/kelas/{id}/siswa'
+    uri: "api/v1/public/kelas/{id}/siswa"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get siswa list by kelas for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get siswa list by kelas for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -466,7 +453,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the kela.'
+        description: "The ID of the kela."
         required: true
         example: architecto
         type: string
@@ -482,17 +469,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 404
+      - status: 404
         content: '{"success":false,"message":"Kelas tidak ditemukan"}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -502,17 +488,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/public/siswa
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get siswa list for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get siswa list for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -526,7 +511,7 @@ endpoints:
     bodyParameters:
       page:
         name: page
-        description: 'Must be at least 1.'
+        description: "Must be at least 1."
         required: false
         example: 16
         type: integer
@@ -536,7 +521,7 @@ endpoints:
         custom: []
       per_page:
         name: per_page
-        description: 'Must be at least 1. Must not be greater than 50.'
+        description: "Must be at least 1. Must not be greater than 50."
         required: false
         example: 22
         type: integer
@@ -546,7 +531,7 @@ endpoints:
         custom: []
       search:
         name: search
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: false
         example: g
         type: string
@@ -556,7 +541,7 @@ endpoints:
         custom: []
       kelas_id:
         name: kelas_id
-        description: 'The <code>id</code> of an existing record in the kelas table.'
+        description: "The <code>id</code> of an existing record in the kelas table."
         required: false
         example: 16
         type: integer
@@ -571,17 +556,16 @@ endpoints:
       kelas_id: 16
     fileParameters: []
     responses:
-      -
-        status: 422
+      - status: 422
         content: '{"success":false,"message":"Parameter tidak valid","errors":{"kelas_id":["The selected kelas id is invalid."]}}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -591,17 +575,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/public/siswa/{id}'
+    uri: "api/v1/public/siswa/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get siswa detail for public API (limited data)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get siswa detail for public API (limited data)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -611,7 +594,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the siswa.'
+        description: "The ID of the siswa."
         required: true
         example: 1
         type: integer
@@ -627,17 +610,16 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 200
+      - status: 200
         content: '{"success":true,"message":"Detail siswa berhasil diambil","data":{"id":1,"nis":"2024001","nama":"Andi Wijaya","jenis_kelamin":"L","kelas":{"id":1,"nama_kelas":"X IPA 1"},"hafalan_count":10}}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-limit: "60"
+          x-ratelimit-remaining: "59"
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -647,17 +629,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/logout
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Logout user'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Logout user"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -678,17 +659,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/auth/profile
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get authenticated user profile'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get authenticated user profile"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -703,15 +683,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -721,17 +700,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - PUT
     uri: api/v1/auth/profile
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update user profile'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Update user profile"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -745,7 +723,7 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: false
         example: b
         type: string
@@ -755,7 +733,7 @@ endpoints:
         custom: []
       email:
         name: email
-        description: ''
+        description: ""
         required: false
         example: null
         type: string
@@ -765,7 +743,7 @@ endpoints:
         custom: []
       current_password:
         name: current_password
-        description: 'This field is required when <code>password</code> is present.'
+        description: "This field is required when <code>password</code> is present."
         required: false
         example: null
         type: string
@@ -775,9 +753,9 @@ endpoints:
         custom: []
       password:
         name: password
-        description: 'Must be at least 8 characters.'
+        description: "Must be at least 8 characters."
         required: false
-        example: ']|{+-0pBNvYg'
+        example: "]|{+-0pBNvYg"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -785,7 +763,7 @@ endpoints:
         custom: []
     cleanBodyParameters:
       name: b
-      password: ']|{+-0pBNvYg'
+      password: "]|{+-0pBNvYg"
     fileParameters: []
     responses: []
     responseFields: []
@@ -794,17 +772,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/auth/revoke-tokens
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Revoke all tokens'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Revoke all tokens"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -825,17 +802,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/user
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: ""
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -850,15 +826,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -868,17 +843,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/hafalan
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Display a listing of the resource.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Display a listing of the resource."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -893,15 +867,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -911,17 +884,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - POST
     uri: api/v1/hafalan
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Store a newly created resource in storage."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -935,7 +907,7 @@ endpoints:
     bodyParameters:
       siswa_id:
         name: siswa_id
-        description: 'The <code>id</code> of an existing record in the siswa table.'
+        description: "The <code>id</code> of an existing record in the siswa table."
         required: true
         example: architecto
         type: string
@@ -945,7 +917,7 @@ endpoints:
         custom: []
       guru_id:
         name: guru_id
-        description: 'The <code>id</code> of an existing record in the guru table.'
+        description: "The <code>id</code> of an existing record in the guru table."
         required: true
         example: architecto
         type: string
@@ -955,9 +927,9 @@ endpoints:
         custom: []
       tanggal:
         name: tanggal
-        description: 'Must be a valid date.'
+        description: "Must be a valid date."
         required: true
-        example: '2025-10-16T15:23:17'
+        example: "2025-10-16T15:23:17"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -965,9 +937,9 @@ endpoints:
         custom: []
       surat:
         name: surat
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: true
-        example: 'n'
+        example: "n"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -975,7 +947,7 @@ endpoints:
         custom: []
       ayat:
         name: ayat
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: true
         example: g
         type: string
@@ -985,20 +957,20 @@ endpoints:
         custom: []
       status:
         name: status
-        description: ''
+        description: ""
         required: true
         example: mengulang
         type: string
         enumValues:
           - lancar
-          - 'perlu bimbingan'
+          - "perlu bimbingan"
           - mengulang
         exampleWasSpecified: false
         nullable: false
         custom: []
       catatan:
         name: catatan
-        description: ''
+        description: ""
         required: false
         example: architecto
         type: string
@@ -1009,8 +981,8 @@ endpoints:
     cleanBodyParameters:
       siswa_id: architecto
       guru_id: architecto
-      tanggal: '2025-10-16T15:23:17'
-      surat: 'n'
+      tanggal: "2025-10-16T15:23:17"
+      surat: "n"
       ayat: g
       status: mengulang
       catatan: architecto
@@ -1022,17 +994,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/hafalan/statistics
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get statistics of hafalan.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get statistics of hafalan."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1047,15 +1018,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1065,17 +1035,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/hafalan/{id}'
+    uri: "api/v1/hafalan/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Display the specified resource.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Display the specified resource."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1085,7 +1054,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the hafalan.'
+        description: "The ID of the hafalan."
         required: true
         example: 1
         type: integer
@@ -1101,15 +1070,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1119,17 +1087,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - PUT
-    uri: 'api/v1/hafalan/{id}'
+    uri: "api/v1/hafalan/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update the specified resource in storage.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Update the specified resource in storage."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1139,7 +1106,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the hafalan.'
+        description: "The ID of the hafalan."
         required: true
         example: 1
         type: integer
@@ -1154,7 +1121,7 @@ endpoints:
     bodyParameters:
       siswa_id:
         name: siswa_id
-        description: 'The <code>id</code> of an existing record in the siswa table.'
+        description: "The <code>id</code> of an existing record in the siswa table."
         required: true
         example: architecto
         type: string
@@ -1164,7 +1131,7 @@ endpoints:
         custom: []
       guru_id:
         name: guru_id
-        description: 'The <code>id</code> of an existing record in the guru table.'
+        description: "The <code>id</code> of an existing record in the guru table."
         required: true
         example: architecto
         type: string
@@ -1174,7 +1141,7 @@ endpoints:
         custom: []
       surah_id:
         name: surah_id
-        description: 'Must be at least 1. Must not be greater than 114.'
+        description: "Must be at least 1. Must not be greater than 114."
         required: true
         example: 22
         type: integer
@@ -1184,7 +1151,7 @@ endpoints:
         custom: []
       ayat_dari:
         name: ayat_dari
-        description: 'Must be at least 1.'
+        description: "Must be at least 1."
         required: true
         example: 67
         type: integer
@@ -1194,7 +1161,7 @@ endpoints:
         custom: []
       ayat_sampai:
         name: ayat_sampai
-        description: 'Must be at least 1.'
+        description: "Must be at least 1."
         required: true
         example: 66
         type: integer
@@ -1204,7 +1171,7 @@ endpoints:
         custom: []
       status:
         name: status
-        description: ''
+        description: ""
         required: true
         example: architecto
         type: string
@@ -1214,9 +1181,9 @@ endpoints:
         custom: []
       tanggal:
         name: tanggal
-        description: 'Must be a valid date.'
+        description: "Must be a valid date."
         required: true
-        example: '2025-10-16T15:23:19'
+        example: "2025-10-16T15:23:19"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1224,7 +1191,7 @@ endpoints:
         custom: []
       keterangan:
         name: keterangan
-        description: ''
+        description: ""
         required: false
         example: architecto
         type: string
@@ -1239,7 +1206,7 @@ endpoints:
       ayat_dari: 67
       ayat_sampai: 66
       status: architecto
-      tanggal: '2025-10-16T15:23:19'
+      tanggal: "2025-10-16T15:23:19"
       keterangan: architecto
     fileParameters: []
     responses: []
@@ -1249,17 +1216,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - DELETE
-    uri: 'api/v1/hafalan/{id}'
+    uri: "api/v1/hafalan/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Remove the specified resource from storage.'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Remove the specified resource from storage."
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1269,7 +1235,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the hafalan.'
+        description: "The ID of the hafalan."
         required: true
         example: 1
         type: integer
@@ -1291,17 +1257,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/kelas
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get all kelas with basic info'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get all kelas with basic info"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1316,15 +1281,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1334,17 +1298,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/kelas/{id}'
+    uri: "api/v1/kelas/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get kelas detail'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get kelas detail"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1354,7 +1317,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the kela.'
+        description: "The ID of the kela."
         required: true
         example: architecto
         type: string
@@ -1370,15 +1333,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1388,19 +1350,18 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/kelas/{id}/siswa'
+    uri: "api/v1/kelas/{id}/siswa"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
       title: |-
         Get siswa list by kelas (Lightweight - Step 1)
         This returns only siswa basic info with hafalan statistics
-      description: ''
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1410,7 +1371,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the kela.'
+        description: "The ID of the kela."
         required: true
         example: architecto
         type: string
@@ -1426,15 +1387,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1444,17 +1404,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/v1/siswa
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get all siswa (with optional filters)'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get all siswa (with optional filters)"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1468,7 +1427,7 @@ endpoints:
     bodyParameters:
       page:
         name: page
-        description: 'Must be at least 1.'
+        description: "Must be at least 1."
         required: false
         example: 16
         type: integer
@@ -1478,7 +1437,7 @@ endpoints:
         custom: []
       per_page:
         name: per_page
-        description: 'Must be at least 1. Must not be greater than 100.'
+        description: "Must be at least 1. Must not be greater than 100."
         required: false
         example: 22
         type: integer
@@ -1488,7 +1447,7 @@ endpoints:
         custom: []
       search:
         name: search
-        description: 'Must not be greater than 255 characters.'
+        description: "Must not be greater than 255 characters."
         required: false
         example: g
         type: string
@@ -1498,7 +1457,7 @@ endpoints:
         custom: []
       kelas_id:
         name: kelas_id
-        description: 'The <code>id</code> of an existing record in the kelas table.'
+        description: "The <code>id</code> of an existing record in the kelas table."
         required: false
         example: 16
         type: integer
@@ -1508,7 +1467,7 @@ endpoints:
         custom: []
       sort_by:
         name: sort_by
-        description: ''
+        description: ""
         required: false
         example: nis
         type: string
@@ -1521,7 +1480,7 @@ endpoints:
         custom: []
       sort_order:
         name: sort_order
-        description: ''
+        description: ""
         required: false
         example: asc
         type: string
@@ -1540,15 +1499,14 @@ endpoints:
       sort_order: asc
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1558,17 +1516,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/siswa/{id}'
+    uri: "api/v1/siswa/{id}"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get siswa detail'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get siswa detail"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1578,7 +1535,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the siswa.'
+        description: "The ID of the siswa."
         required: true
         example: 1
         type: integer
@@ -1594,15 +1551,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1612,19 +1568,18 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/siswa/{id}/hafalan'
+    uri: "api/v1/siswa/{id}/hafalan"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
       title: |-
         Get hafalan by siswa (On Demand - Step 2)
         This is called when user clicks "Lihat Detail"
-      description: ''
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1634,7 +1589,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the siswa.'
+        description: "The ID of the siswa."
         required: true
         example: 1
         type: integer
@@ -1650,15 +1605,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1668,17 +1622,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
-    uri: 'api/v1/siswa/{id}/statistics'
+    uri: "api/v1/siswa/{id}/statistics"
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get siswa statistics'
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: "Get siswa statistics"
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1688,7 +1641,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the siswa.'
+        description: "The ID of the siswa."
         required: true
         example: 1
         type: integer
@@ -1704,15 +1657,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 401
+      - status: 401
         content: '{"success":false,"message":"Unauthenticated."}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []
@@ -1722,17 +1674,16 @@ endpoints:
     method: null
     route: null
     custom: []
-  -
-    httpMethods:
+  - httpMethods:
       - GET
     uri: api/health
     metadata:
       groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
+      groupDescription: ""
+      subgroup: ""
+      subgroupDescription: ""
+      title: ""
+      description: ""
       authenticated: false
       deprecated: false
       custom: []
@@ -1747,15 +1698,14 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses:
-      -
-        status: 200
+      - status: 200
         content: '{"status":"ok","version":"v1","timestamp":"2025-10-16T15:23:24+00:00"}'
         headers:
-          cache-control: 'no-cache, private'
+          cache-control: "no-cache, private"
           content-type: application/json
           x-content-type-options: nosniff
           x-frame-options: DENY
-          x-xss-protection: '1; mode=block'
+          x-xss-protection: "1; mode=block"
           vary: Origin
         description: null
         custom: []

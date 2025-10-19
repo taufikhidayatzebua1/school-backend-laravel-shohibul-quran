@@ -21,7 +21,7 @@ return new class extends Migration
                 'siswa',
                 'orang-tua',
                 'guru',
-                'wali_kelas',
+                'wali-kelas',
                 'kepala-sekolah',
                 'tata-usaha',
                 'yayasan',

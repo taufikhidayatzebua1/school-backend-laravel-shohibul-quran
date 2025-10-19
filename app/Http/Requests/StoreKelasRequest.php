@@ -15,7 +15,7 @@ class StoreKelasRequest extends FormRequest
     {
         return [
             'nama_kelas' => 'required|string|max:255',
-            'wali_kelas_id' => 'required|exists:users,id',
+            'wali_kelas_id' => 'required|exists:guru,id',
             'tahun_ajaran' => 'required|string|max:9',
         ];
     }

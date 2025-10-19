@@ -219,9 +219,9 @@ if ($httpCode == 422 && isset($data['errors'])) {
 }
 echo "\n";
 
-// Test 7: StoreUserRequest with wali_kelas role
+// Test 7: StoreUserRequest with wali-kelas role
 echo "┌─────────────────────────────────────────────────────────────────────┐\n";
-echo "│ Test 7: StoreUserRequest - Role Validation (wali_kelas)            │\n";
+echo "│ Test 7: StoreUserRequest - Role Validation (wali-kelas)            │\n";
 echo "└─────────────────────────────────────────────────────────────────────┘\n";
 
 $ch = curl_init();

@@ -15,7 +15,7 @@ class UpdateKelasRequest extends FormRequest
     {
         return [
             'nama_kelas' => 'sometimes|string|max:255',
-            'wali_kelas_id' => 'sometimes|exists:users,id',
+            'wali_kelas_id' => 'sometimes|exists:guru,id',
             'tahun_ajaran' => 'sometimes|string|max:9',
         ];
     }

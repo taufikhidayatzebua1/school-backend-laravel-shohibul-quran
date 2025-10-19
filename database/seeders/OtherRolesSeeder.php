@@ -11,20 +11,20 @@ class OtherRolesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * 
+     * Seeder ini hanya untuk role yang BUKAN guru/wali-kelas/kepala-sekolah:
+     * - super-admin
+     * - admin
+     * - tata-usaha
+     * - yayasan
+     * - orang-tua
+     * 
+     * Note: Guru, wali-kelas, dan kepala-sekolah ada di GuruSeeder
      */
     public function run(): void
     {
         // Buat user untuk role lainnya
         $users = [
-            // Wali Kelas
-            [
-                'name' => 'Wali Kelas 1A',
-                'email' => 'wali.kelas1a@sekolah.com',
-                'password' => Hash::make('password123'),
-                'role' => 'wali_kelas',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
             // Super Admin
             [
                 'name' => 'Super Admin',
@@ -40,15 +40,6 @@ class OtherRolesSeeder extends Seeder
                 'email' => 'admin@sekolah.com',
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Kepala Sekolah
-            [
-                'name' => 'Dr. Agus Salim, M.Pd',
-                'email' => 'kepala.sekolah@sekolah.com',
-                'password' => Hash::make('password123'),
-                'role' => 'kepala-sekolah',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -132,5 +123,13 @@ class OtherRolesSeeder extends Seeder
         foreach ($users as $userData) {
             DB::table('users')->insert($userData);
         }
+
+        echo "✓ OtherRolesSeeder berhasil!\n";
+        echo "  - 1 Super Admin\n";
+        echo "  - 1 Admin\n";
+        echo "  - 2 Tata Usaha\n";
+        echo "  - 2 Yayasan\n";
+        echo "  - 5 Orang Tua\n";
+        echo "  - Total: 11 user non-guru\n";
     }
 }

@@ -17,7 +17,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:siswa,orang-tua,guru,wali_kelas,kepala-sekolah,tata-usaha,yayasan,admin,super-admin',
+            'role' => 'required|in:siswa,orang-tua,guru,wali-kelas,kepala-sekolah,tata-usaha,yayasan,admin,super-admin',
         ];
     }
 }

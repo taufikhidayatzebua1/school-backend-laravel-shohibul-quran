@@ -112,7 +112,7 @@ class User extends Authenticatable
      */
     public function isWaliKelas(): bool
     {
-        return $this->role === 'wali_kelas';
+        return $this->role === 'wali-kelas';
     }
 
     /**
