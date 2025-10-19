@@ -80,6 +80,25 @@ class TestingUserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        // 4. Insert ke tabel ORANG_TUA (untuk testing POV orang tua)
+        $orangTuaId = DB::table('orang_tua')->insertGetId([
+            'user_id' => $userId,
+            'nama' => 'Taufik Hizet',
+            'jenis_kelamin' => 'L',
+            'tempat_lahir' => 'Jakarta',
+            'tanggal_lahir' => '2000-01-01',
+            'alamat' => 'Alamat Testing',
+            'no_hp' => '081234567890',
+            'pendidikan' => null,
+            'pekerjaan' => null,
+            'penghasilan' => null,
+            'url_photo' => 'https://ui-avatars.com/api/?name=Taufik+Hizet&background=4F46E5',
+            'url_cover' => null,
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         echo "\n";
         echo "╔═══════════════════════════════════════════════════════════════════╗\n";
         echo "║              ✓ TESTING USER BERHASIL DIBUAT!                     ║\n";
@@ -87,13 +106,15 @@ class TestingUserSeeder extends Seeder
         echo "║  Email    : taufikhizet1350@gmail.com                            ║\n";
         echo "║  Password : password123                                           ║\n";
         echo "║  User ID  : $userId                                                    ║\n";
-        echo "║  Siswa ID : " . ($siswaId ?? 'N/A') . "                                                   ║\n";
-        echo "║  Guru ID  : $guruId                                                   ║\n";
+    echo "║  Siswa ID : " . ($siswaId ?? 'N/A') . "                                                   ║\n";
+    echo "║  Guru ID  : $guruId                                                   ║\n";
+    echo "║  Orang Tua ID : " . ($orangTuaId ?? 'N/A') . "                                            ║\n";
         echo "╠═══════════════════════════════════════════════════════════════════╣\n";
         echo "║  STATUS:                                                          ║\n";
         echo "║  ✓ Ada di tabel users                                             ║\n";
-        echo "║  ✓ Ada di tabel siswa (untuk testing POV siswa)                  ║\n";
-        echo "║  ✓ Ada di tabel guru (untuk testing POV guru/wali/kepsek)        ║\n";
+    echo "║  ✓ Ada di tabel siswa (untuk testing POV siswa)                  ║\n";
+    echo "║  ✓ Ada di tabel guru (untuk testing POV guru/wali/kepsek)        ║\n";
+    echo "║  ✓ Ada di tabel orang_tua (untuk testing POV orang tua)         ║\n";
         echo "╠═══════════════════════════════════════════════════════════════════╣\n";
         echo "║  CARA TESTING SWITCH ROLE:                                        ║\n";
         echo "║                                                                   ║\n";

@@ -30,14 +30,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            OtherRolesSeeder::class,      // Admin, super-admin, tata-usaha, yayasan
-            GuruSeeder::class,             // Guru, wali-kelas, kepala-sekolah
-            TahunAjaranSeeder::class,      // Tahun ajaran
-            KelasSeeder::class,            // Kelas
-            SiswaSeeder::class,            // Siswa
-            OrangTuaSeeder::class,         // Orang tua (lengkap dengan tabel orang_tua)
-            HafalanSeeder::class,          // Hafalan
-            // TestingUserSeeder::class,   // Uncomment jika perlu user testing
+            OtherRolesSeeder::class,        // Admin, super-admin, tata-usaha, yayasan
+            GuruSeeder::class,              // Guru, wali-kelas, kepala-sekolah
+            TahunAjaranSeeder::class,       // Tahun ajaran
+            KelasSeeder::class,             // Kelas
+            SiswaSeeder::class,             // Siswa
+            OrangTuaSeeder::class,          // Orang tua (lengkap dengan tabel orang_tua)
+            HafalanSeeder::class,           // Hafalan
+            TestingUserSeeder::class,       // Uncomment jika perlu user testing
         ]);
     }
 }
