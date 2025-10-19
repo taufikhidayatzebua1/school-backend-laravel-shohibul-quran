@@ -138,4 +138,24 @@ class User extends Authenticatable
     {
         return $this->role === 'yayasan';
     }
+
+    /**
+     * Get the siswa record associated with the user.
+     * 
+     * One-to-One relationship
+     */
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class);
+    }
+
+    /**
+     * Get the guru record associated with the user.
+     * 
+     * One-to-One relationship
+     */
+    public function guru()
+    {
+        return $this->hasOne(Guru::class);
+    }
 }

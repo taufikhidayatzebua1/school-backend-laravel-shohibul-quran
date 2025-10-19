@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Siswa extends Model
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -24,9 +27,15 @@ class Siswa extends Model
         'user_id',
         'nis',
         'nama',
+        'tempat_lahir',
         'jenis_kelamin',
         'tanggal_lahir',
         'alamat',
+        'no_hp',
+        'tahun_masuk',
+        'url_photo',
+        'url_cover',
+        'is_active',
         'kelas_id',
     ];
 
@@ -37,6 +46,8 @@ class Siswa extends Model
      */
     protected $casts = [
         'tanggal_lahir' => 'date',
+        'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     /**
