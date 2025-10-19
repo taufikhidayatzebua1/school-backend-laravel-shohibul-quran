@@ -26,11 +26,16 @@ class GuruResource extends JsonResource
             'nip' => $this->nip,
             'nama' => $this->nama,
             'jenis_kelamin' => $this->jenis_kelamin,
+            'tempat_lahir' => $this->tempat_lahir,
             'tanggal_lahir' => $this->tanggal_lahir?->format('Y-m-d'),
             'alamat' => $this->alamat,
             'no_hp' => $this->no_hp,
+            'url_photo' => $this->url_photo,
+            'url_cover' => $this->url_cover,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
+            'deleted_at' => $this->deleted_at?->toDateTimeString(),
         ];
     }
 }

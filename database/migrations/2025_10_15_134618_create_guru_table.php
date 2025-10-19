@@ -13,14 +13,19 @@ return new class extends Migration
     {
         Schema::create('guru', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->string('nip')->unique();
-            $table->string('nama');
-            $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->date('tanggal_lahir');
-            $table->text('alamat');
-            $table->string('no_hp');
+            $table->foreignId('user_id')->nullable()->unique()->constrained('users')->onDelete('set null');
+            $table->string('nip')->unique()->nullable();
+            $table->string('nama')->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('no_hp')->nullable();
+            $table->string('url_photo')->nullable();
+            $table->string('url_cover')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

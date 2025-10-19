@@ -67,9 +67,13 @@ class TestingUserSeeder extends Seeder
             'nip' => '199999999999999999', // NIP khusus testing
             'nama' => 'Taufik Hizet, S.Pd',
             'jenis_kelamin' => 'L',
+            'tempat_lahir' => 'Jakarta',
             'tanggal_lahir' => '2000-01-01',
             'alamat' => 'Alamat Testing',
             'no_hp' => '081234567890',
+            'url_photo' => 'https://ui-avatars.com/api/?name=Taufik+Hizet&background=DC2626&color=fff&size=200',
+            'url_cover' => null,
+            'is_active' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
