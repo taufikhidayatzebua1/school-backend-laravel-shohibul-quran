@@ -62,5 +62,13 @@ class Guru extends Model
     {
         return $this->hasMany(Hafalan::class);
     }
+
+    /**
+     * Get the nama lengkap attribute (accessor for compatibility).
+     */
+    public function getNamaLengkapAttribute(): string
+    {
+        return $this->nama ?? '';
+    }
 }
 
