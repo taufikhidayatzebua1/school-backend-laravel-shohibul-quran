@@ -44,7 +44,6 @@ class AuthController extends Controller
                 'user' => new UserResource($user),
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'expires_in' => $expiresIn,
                 'expires_at' => $expiresAt,
             ]
         ], 201);
@@ -88,7 +87,6 @@ class AuthController extends Controller
                 'user' => new UserResource($user),
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'expires_in' => $expiresIn,
                 'expires_at' => $expiresAt,
             ]
         ], 200);
