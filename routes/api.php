@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Public\PublicHafalanController;
 use App\Http\Controllers\Api\Public\PublicKelasController;
 use App\Http\Controllers\Api\Public\PublicSiswaController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HafalanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\OrangTuaController;
@@ -121,6 +122,15 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
                 Route::get('/{id}', [SiswaController::class, 'show']);
                 Route::get('/{id}/hafalan', [SiswaController::class, 'getHafalan']);
                 Route::get('/{id}/statistics', [SiswaController::class, 'getStatistics']);
+            });
+
+            // Guru routes (with authentication and role check)
+            Route::prefix('guru')->group(function () {
+                Route::get('/', [GuruController::class, 'index']);
+                Route::post('/', [GuruController::class, 'store']);
+                Route::get('/{id}', [GuruController::class, 'show']);
+                Route::put('/{id}', [GuruController::class, 'update']);
+                Route::delete('/{id}', [GuruController::class, 'destroy']);
             });
 
             // Orang Tua routes (with authentication and role check)
