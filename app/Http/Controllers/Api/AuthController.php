@@ -23,25 +23,49 @@ class AuthController extends Controller
 {
     /**
      * Register a new user
+     * HANYA bisa dilakukan oleh tata-usaha, admin, super-admin
+     * Endpoint ini untuk registrasi oleh admin, bukan self-registration
      */
     public function register(StoreUserRequest $request)
     {
+        // Cek apakah ada user yang login (authentication check)
+        if (!$request->user()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated. Only tata-usaha, admin, or super-admin can register new users.',
+            ], 401);
+        }
+
+        // Cek apakah user memiliki role yang diizinkan (authorization check)
+        if (!$request->user()->hasAnyRole(['tata-usaha', 'admin', 'super-admin'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Only tata-usaha, admin, or super-admin can register new users.',
+            ], 403);
+        }
+
+        // Validasi role sudah dilakukan di StoreUserRequest
         $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role, // role wajib diisi sekarang
         ];
 
-        // Hanya tambahkan role jika dikirim, jika tidak akan pakai default 'siswa' dari database
-        if ($request->filled('role')) {
-            $userData['role'] = $request->role;
+        // Optional fields
+        if ($request->filled('username')) {
+            $userData['username'] = $request->username;
+        }
+
+        if ($request->has('is_active')) {
+            $userData['is_active'] = $request->is_active;
         }
 
         $user = User::create($userData);
 
         return response()->json([
             'success' => true,
-            'message' => 'User registered successfully. Please login to continue.',
+            'message' => 'User registered successfully.',
             'data' => [
                 'user' => new UserResource($user),
             ]

@@ -10,6 +10,7 @@ use App\Http\Controllers\HafalanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,6 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
     
     // Auth routes (no authentication required) - Rate limited to prevent brute force
     Route::prefix('auth')->middleware('throttle:' . config('api.rate_limit.auth', 10) . ',1')->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
         Route::post('/reset-password', [AuthController::class, 'resetPassword']);
@@ -62,6 +62,7 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
     Route::middleware(['auth:sanctum', 'throttle:' . config('api.rate_limit.protected', 200) . ',1'])->group(function () {
         // Auth routes
         Route::prefix('auth')->group(function () {
+            Route::post('/register', [AuthController::class, 'register']); // Dipindah ke protected, butuh auth
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/profile', [AuthController::class, 'profile']);
             Route::put('/profile', [AuthController::class, 'updateProfile']);
@@ -71,6 +72,16 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
         // Legacy route for backward compatibility
         Route::get('/user', function (Request $request) {
             return $request->user();
+        });
+
+        // User Management routes (hanya untuk tata-usaha, admin, super-admin)
+        Route::prefix('users')->middleware('role:tata-usaha,admin,super-admin')->group(function () {
+            Route::get('/', [UserController::class, 'index']);
+            Route::post('/', [UserController::class, 'store']);
+            Route::get('/available-roles', [UserController::class, 'availableRoles']);
+            Route::get('/{user}', [UserController::class, 'show']);
+            Route::put('/{user}', [UserController::class, 'update']);
+            Route::delete('/{user}', [UserController::class, 'destroy']);
         });
 
         // Protected routes with role check (guru, kepala-sekolah, admin, super-admin)

@@ -153,6 +153,82 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user can create a user with the given role
+     * 
+     * Aturan:
+     * - tata-usaha: hanya bisa create siswa, orang-tua, guru, wali-kelas
+     * - admin: bisa create semua kecuali admin dan super-admin
+     * - super-admin: bisa create semua kecuali super-admin
+     */
+    public function canCreateRole(string $targetRole): bool
+    {
+        if ($this->isTataUsaha()) {
+            return in_array($targetRole, ['siswa', 'orang-tua', 'guru', 'wali-kelas']);
+        }
+
+        if ($this->isAdmin()) {
+            return !in_array($targetRole, ['admin', 'super-admin']);
+        }
+
+        if ($this->isSuperAdmin()) {
+            return $targetRole !== 'super-admin';
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if user can update another user's role
+     * 
+     * Aturan:
+     * - User TIDAK BISA mengubah role dirinya sendiri
+     * - tata-usaha: hanya bisa update role siswa, orang-tua, guru, wali-kelas
+     * - admin: bisa update semua role kecuali admin dan super-admin
+     * - super-admin: bisa update semua role kecuali super-admin
+     */
+    public function canUpdateRole(User $targetUser, string $newRole): bool
+    {
+        // User tidak bisa mengubah role dirinya sendiri
+        if ($this->id === $targetUser->id) {
+            return false;
+        }
+
+        if ($this->isTataUsaha()) {
+            return in_array($newRole, ['siswa', 'orang-tua', 'guru', 'wali-kelas']);
+        }
+
+        if ($this->isAdmin()) {
+            return !in_array($newRole, ['admin', 'super-admin']);
+        }
+
+        if ($this->isSuperAdmin()) {
+            return $newRole !== 'super-admin';
+        }
+
+        return false;
+    }
+
+    /**
+     * Get allowed roles for this user to create/assign
+     */
+    public function getAllowedRoles(): array
+    {
+        if ($this->isTataUsaha()) {
+            return ['siswa', 'orang-tua', 'guru', 'wali-kelas'];
+        }
+
+        if ($this->isAdmin()) {
+            return ['siswa', 'orang-tua', 'guru', 'wali-kelas', 'kepala-sekolah', 'tata-usaha', 'yayasan'];
+        }
+
+        if ($this->isSuperAdmin()) {
+            return ['siswa', 'orang-tua', 'guru', 'wali-kelas', 'kepala-sekolah', 'tata-usaha', 'yayasan', 'admin'];
+        }
+
+        return [];
+    }
+
+    /**
      * Get the siswa record associated with the user.
      * 
      * One-to-One relationship

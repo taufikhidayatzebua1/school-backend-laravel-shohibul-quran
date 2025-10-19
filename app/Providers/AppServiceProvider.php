@@ -5,9 +5,21 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Policies\UserPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        User::class => UserPolicy::class,
+    ];
+
     /**
      * Register any application services.
      */
@@ -21,9 +33,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register policies
+        $this->registerPolicies();
+
         // Graceful database connection handling
         // Otomatis fallback ke file session jika database tidak tersedia
         $this->handleDatabaseConnection();
+    }
+
+    /**
+     * Register the application's policies.
+     */
+    protected function registerPolicies(): void
+    {
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
     }
 
     /**
