@@ -45,7 +45,7 @@ class StoreUserRequest extends FormRequest
                     if (!$canCreateWithRole) {
                         $validator->errors()->add(
                             'role',
-                            'Tata-usaha hanya dapat membuat user dengan role: siswa, orang-tua, guru, wali-kelas.'
+                            'Batasan Membuat Role.'
                         );
                     }
                 }
@@ -55,7 +55,7 @@ class StoreUserRequest extends FormRequest
                     if (!$canCreateWithRole) {
                         $validator->errors()->add(
                             'role',
-                            'Admin tidak dapat membuat user dengan role: admin atau super-admin.'
+                            'Batasan Membuat Role.'
                         );
                     }
                 }
@@ -65,7 +65,7 @@ class StoreUserRequest extends FormRequest
                     if (!$canCreateWithRole) {
                         $validator->errors()->add(
                             'role',
-                            'Super-admin tidak dapat membuat user dengan role: super-admin.'
+                            'Batasan Membuat Role.'
                         );
                     }
                 }
@@ -73,7 +73,7 @@ class StoreUserRequest extends FormRequest
                 else {
                     $validator->errors()->add(
                         'role',
-                        'Anda tidak memiliki izin untuk membuat user baru.'
+                        'Tidak memiliki izin untuk membuat user dengan role apapun.'
                     );
                 }
             }
@@ -87,7 +87,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'role.required' => 'Role wajib diisi.',
-            'role.in' => 'Role yang dipilih tidak valid. Pilihan: siswa, orang-tua, guru, wali-kelas, kepala-sekolah, tata-usaha, yayasan, admin, super-admin.',
+            'role.in' => 'Role Invalid.',
         ];
     }
 }
