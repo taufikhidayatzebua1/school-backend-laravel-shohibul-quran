@@ -30,9 +30,11 @@ class TestingUserSeeder extends Seeder
         // 1. Buat user dengan role default siswa
         $userId = DB::table('users')->insertGetId([
             'name' => 'Taufik Hizet (Testing User)',
+            'username' => 'taufikhizet',
             'email' => 'taufikhizet1350@gmail.com',
             'password' => Hash::make('password123'),
             'role' => 'siswa', // Default role, bisa diubah-ubah
+            'is_active' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

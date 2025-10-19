@@ -23,9 +23,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
+        'is_active',
     ];
 
     /**
@@ -48,6 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -157,5 +160,59 @@ class User extends Authenticatable
     public function guru()
     {
         return $this->hasOne(Guru::class);
+    }
+
+    /**
+     * Check if user is active
+     */
+    public function isActive(): bool
+    {
+        return $this->is_active === true;
+    }
+
+    /**
+     * Generate unique username
+     * Format: name_randomstring (e.g., john_doe_a1b2c3)
+     */
+    public static function generateUniqueUsername(string $name): string
+    {
+        // Clean name: lowercase, replace spaces with underscore, remove special chars
+        $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $name)));
+        
+        // Limit base username to 20 characters
+        $baseUsername = substr($baseUsername, 0, 20);
+        
+        // Try base username first
+        $username = $baseUsername;
+        $counter = 1;
+        
+        // If exists, add random suffix
+        while (self::where('username', $username)->exists()) {
+            $randomSuffix = substr(md5(uniqid(rand(), true)), 0, 6);
+            $username = $baseUsername . '_' . $randomSuffix;
+            
+            // Safety: after 10 attempts, use timestamp
+            if ($counter > 10) {
+                $username = $baseUsername . '_' . time();
+                break;
+            }
+            $counter++;
+        }
+        
+        return $username;
+    }
+
+    /**
+     * Boot method to auto-generate username if not provided
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($user) {
+            if (empty($user->username)) {
+                $user->username = self::generateUniqueUsername($user->name);
+            }
+        });
     }
 }
