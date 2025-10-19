@@ -26,45 +26,55 @@ use App\Http\Controllers\UserController;
 
 Route::prefix(config('api.version', 'v1'))->group(function () {
     
-    // Auth routes (no authentication required) - Rate limited to prevent brute force
+    /*
+    |--------------------------------------------------------------------------
+    | Public Routes (No Authentication)
+    |--------------------------------------------------------------------------
+    */
+    
+    // Authentication Routes
     Route::prefix('auth')->middleware('throttle:' . config('api.rate_limit.auth', 10) . ',1')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
         Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     });
 
-    // Public routes (no authentication required) - Rate limited to prevent abuse
-    // Uses Public Controllers with limited data exposure
-    // Cached for 30 minutes to improve performance
+    // Public API Routes (Limited Data Exposure)
     Route::prefix('public')->middleware([
         'throttle:' . config('api.rate_limit.public', 60) . ',1', 
         'cache.response:' . config('api.cache.public_endpoints', 30)
     ])->group(function () {
-        // Hafalan routes (no authentication required)
+        
+        // Public Hafalan
         Route::prefix('hafalan')->group(function () {
             Route::get('/', [PublicHafalanController::class, 'index']);
             Route::get('/{id}', [PublicHafalanController::class, 'show']);
         });
 
-        // Kelas routes (no authentication required)
+        // Public Kelas
         Route::prefix('kelas')->group(function () {
             Route::get('/', [PublicKelasController::class, 'index']);
             Route::get('/{id}', [PublicKelasController::class, 'show']);
             Route::get('/{id}/siswa', [PublicKelasController::class, 'getSiswa']);
         });
 
-        // Siswa routes (no authentication required)
+        // Public Siswa
         Route::prefix('siswa')->group(function () {
             Route::get('/', [PublicSiswaController::class, 'index']);
             Route::get('/{id}', [PublicSiswaController::class, 'show']);
         });
     });
 
-    // Protected routes (authentication required) - Higher rate limit for authenticated users
+    /*
+    |--------------------------------------------------------------------------
+    | Protected Routes (Authentication Required)
+    |--------------------------------------------------------------------------
+    */
+    
     Route::middleware(['auth:sanctum', 'throttle:' . config('api.rate_limit.protected', 200) . ',1'])->group(function () {
-        // Auth routes
+        
+        // Authentication & Profile Management
         Route::prefix('auth')->group(function () {
-            Route::post('/register', [AuthController::class, 'register']); // Dipindah ke protected, butuh auth
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/profile', [AuthController::class, 'profile']);
             Route::put('/profile', [AuthController::class, 'updateProfile']);
@@ -76,7 +86,11 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
             return $request->user();
         });
 
-        // User Management routes (hanya untuk tata-usaha, admin, super-admin)
+        /*
+        |--------------------------------------------------------------------------
+        | User Management (Admin Only)
+        |--------------------------------------------------------------------------
+        */
         Route::prefix('users')->middleware('role:tata-usaha,admin,super-admin')->group(function () {
             Route::get('/', [UserController::class, 'index']);
             Route::post('/', [UserController::class, 'store']);
@@ -86,78 +100,117 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
             Route::delete('/{user}', [UserController::class, 'destroy']);
         });
 
-        // Protected routes with role check (guru, kepala-sekolah, admin, super-admin)
-        Route::middleware('role:guru,kepala-sekolah,admin,super-admin')->group(function () {
-            // Tahun Ajaran routes (with authentication and role check)
-            Route::prefix('tahun-ajaran')->group(function () {
-                Route::get('/', [TahunAjaranController::class, 'index']);
-                Route::get('/active', [TahunAjaranController::class, 'active']);
+        /*
+        |--------------------------------------------------------------------------
+        | Tahun Ajaran Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('tahun-ajaran')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [TahunAjaranController::class, 'index']);
+            Route::get('/active', [TahunAjaranController::class, 'active']);
+            Route::get('/{id}', [TahunAjaranController::class, 'show']);
+            
+            // Write Access (Admin only)
+            Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
                 Route::post('/', [TahunAjaranController::class, 'store']);
-                Route::get('/{id}', [TahunAjaranController::class, 'show']);
                 Route::put('/{id}', [TahunAjaranController::class, 'update']);
                 Route::post('/{id}/set-active', [TahunAjaranController::class, 'setActive']);
                 Route::delete('/{id}', [TahunAjaranController::class, 'destroy']);
             });
+        });
 
-            // Hafalan routes (with authentication and role check)
-            Route::prefix('hafalan')->group(function () {
-                Route::get('/', [HafalanController::class, 'index']);
+        /*
+        |--------------------------------------------------------------------------
+        | Kelas Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('kelas')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [KelasController::class, 'index']);
+            Route::get('/{id}', [KelasController::class, 'show']);
+            Route::get('/{id}/siswa', [KelasController::class, 'getSiswa']);
+            
+            // Write Access (Admin only)
+            Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                Route::post('/', [KelasController::class, 'store']);
+                Route::put('/{id}', [KelasController::class, 'update']);
+                Route::delete('/{id}', [KelasController::class, 'destroy']);
+            });
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('siswa')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [SiswaController::class, 'index']);
+            Route::get('/{id}', [SiswaController::class, 'show']);
+            Route::get('/{id}/hafalan', [SiswaController::class, 'getHafalan']);
+            Route::get('/{id}/statistics', [SiswaController::class, 'getStatistics']);
+            
+            // Write Access (Admin only)
+            Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                Route::post('/', [SiswaController::class, 'store']);
+                Route::put('/{id}', [SiswaController::class, 'update']);
+                Route::delete('/{id}', [SiswaController::class, 'destroy']);
+            });
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Guru Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('guru')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [GuruController::class, 'index']);
+            Route::get('/{id}', [GuruController::class, 'show']);
+            
+            // Write Access (Admin only)
+            Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                Route::post('/', [GuruController::class, 'store']);
+                Route::put('/{id}', [GuruController::class, 'update']);
+                Route::delete('/{id}', [GuruController::class, 'destroy']);
+            });
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Orang Tua Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('orang-tua')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [OrangTuaController::class, 'index']);
+            Route::get('/{id}', [OrangTuaController::class, 'show']);
+            
+            // Write Access (Admin only)
+            Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
+                Route::post('/', [OrangTuaController::class, 'store']);
+                Route::put('/{id}', [OrangTuaController::class, 'update']);
+                Route::delete('/{id}', [OrangTuaController::class, 'destroy']);
+            });
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hafalan Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('hafalan')->group(function () {
+            // Read Access (All authenticated users)
+            Route::get('/', [HafalanController::class, 'index']);
+            Route::get('/{id}', [HafalanController::class, 'show']);
+            Route::get('/statistics', [HafalanController::class, 'statistics']);
+            
+            // Write Access (Guru, Kepala Sekolah, Admin)
+            Route::middleware('role:guru,kepala-sekolah,tata-usaha,admin,super-admin')->group(function () {
                 Route::post('/', [HafalanController::class, 'store']);
-                Route::get('/statistics', [HafalanController::class, 'statistics']);
-                Route::get('/{id}', [HafalanController::class, 'show']);
                 Route::put('/{id}', [HafalanController::class, 'update']);
                 Route::delete('/{id}', [HafalanController::class, 'destroy']);
-            });
-
-            // Kelas routes (with authentication and role check)
-            Route::prefix('kelas')->group(function () {
-                Route::get('/', [KelasController::class, 'index']);
-                Route::get('/{id}', [KelasController::class, 'show']);
-                Route::get('/{id}/siswa', [KelasController::class, 'getSiswa']);
-            });
-
-            // Siswa routes (with authentication and role check)
-            Route::prefix('siswa')->group(function () {
-                // Read access for all authenticated users with base roles
-                Route::get('/', [SiswaController::class, 'index']);
-                Route::get('/{id}', [SiswaController::class, 'show']);
-                Route::get('/{id}/hafalan', [SiswaController::class, 'getHafalan']);
-                Route::get('/{id}/statistics', [SiswaController::class, 'getStatistics']);
-                
-                // Write access only for tata-usaha, admin, super-admin
-                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
-                    Route::post('/', [SiswaController::class, 'store']);
-                    Route::put('/{id}', [SiswaController::class, 'update']);
-                    Route::delete('/{id}', [SiswaController::class, 'destroy']);
-                });
-            });
-
-            // Guru routes (with authentication and role check)
-            Route::prefix('guru')->group(function () {
-                // Read access for all authenticated users with base roles
-                Route::get('/', [GuruController::class, 'index']);
-                Route::get('/{id}', [GuruController::class, 'show']);
-                
-                // Write access only for tata-usaha, admin, super-admin
-                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
-                    Route::post('/', [GuruController::class, 'store']);
-                    Route::put('/{id}', [GuruController::class, 'update']);
-                    Route::delete('/{id}', [GuruController::class, 'destroy']);
-                });
-            });
-
-            // Orang Tua routes (with authentication and role check)
-            Route::prefix('orang-tua')->group(function () {
-                // Read access for all authenticated users with base roles
-                Route::get('/', [OrangTuaController::class, 'index']);
-                Route::get('/{id}', [OrangTuaController::class, 'show']);
-                
-                // Write access only for tata-usaha, admin, super-admin
-                Route::middleware('role:tata-usaha,admin,super-admin')->group(function () {
-                    Route::post('/', [OrangTuaController::class, 'store']);
-                    Route::put('/{id}', [OrangTuaController::class, 'update']);
-                    Route::delete('/{id}', [OrangTuaController::class, 'destroy']);
-                });
             });
         });
     });
