@@ -22,8 +22,8 @@ class StoreTahunAjaranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'semester' => 'required|string|in:Ganjil,Genap',
-            'tahun' => 'required|string|regex:/^\d{4}\/\d{4}$/',
+            'semester' => 'required|string|max:50',
+            'tahun' => 'required|string|max:20',
             'is_active' => 'nullable|boolean',
         ];
     }
@@ -46,8 +46,10 @@ class StoreTahunAjaranRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'semester.in' => 'Semester harus berisi Ganjil atau Genap.',
-            'tahun.regex' => 'Format tahun ajaran harus YYYY/YYYY (contoh: 2024/2025).',
+            'semester.required' => 'Semester wajib diisi.',
+            'semester.max' => 'Semester maksimal 50 karakter.',
+            'tahun.required' => 'Tahun ajaran wajib diisi.',
+            'tahun.max' => 'Tahun ajaran maksimal 20 karakter.',
         ];
     }
 }

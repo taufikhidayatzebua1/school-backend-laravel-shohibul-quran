@@ -22,8 +22,8 @@ class UpdateTahunAjaranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'semester' => 'sometimes|string|in:Ganjil,Genap',
-            'tahun' => 'sometimes|string|regex:/^\d{4}\/\d{4}$/',
+            'semester' => 'sometimes|string|max:50',
+            'tahun' => 'sometimes|string|max:20',
             'is_active' => 'nullable|boolean',
         ];
     }
@@ -46,8 +46,8 @@ class UpdateTahunAjaranRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'semester.in' => 'Semester harus berisi Ganjil atau Genap.',
-            'tahun.regex' => 'Format tahun ajaran harus YYYY/YYYY (contoh: 2024/2025).',
+            'semester.max' => 'Semester maksimal 50 karakter.',
+            'tahun.max' => 'Tahun ajaran maksimal 20 karakter.',
         ];
     }
 }
