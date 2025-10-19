@@ -15,40 +15,53 @@ class KelasSeeder extends Seeder
     {
         // Ambil ID guru untuk wali kelas
         $guruIds = DB::table('guru')->pluck('id');
+        
+        // Ambil tahun ajaran yang aktif
+        $tahunAjaranAktif = DB::table('tahun_ajaran')->where('is_active', true)->first();
 
         DB::table('kelas')->insert([
             [
-                'nama_kelas' => 'X IPA 1',
+                'nama' => 'X IPA 1',
+                'ruangan' => 'R101',
                 'wali_kelas_id' => $guruIds[0] ?? null,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran_id' => $tahunAjaranAktif?->id,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_kelas' => 'X IPA 2',
+                'nama' => 'X IPA 2',
+                'ruangan' => 'R102',
                 'wali_kelas_id' => $guruIds[1] ?? null,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran_id' => $tahunAjaranAktif?->id,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_kelas' => 'XI IPA 1',
+                'nama' => 'XI IPA 1',
+                'ruangan' => 'R201',
                 'wali_kelas_id' => $guruIds[2] ?? null,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran_id' => $tahunAjaranAktif?->id,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_kelas' => 'XI IPA 2',
+                'nama' => 'XI IPA 2',
+                'ruangan' => 'R202',
                 'wali_kelas_id' => $guruIds[3] ?? null,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran_id' => $tahunAjaranAktif?->id,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_kelas' => 'XII IPA 1',
+                'nama' => 'XII IPA 1',
+                'ruangan' => 'R301',
                 'wali_kelas_id' => $guruIds[4] ?? null,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran_id' => $tahunAjaranAktif?->id,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

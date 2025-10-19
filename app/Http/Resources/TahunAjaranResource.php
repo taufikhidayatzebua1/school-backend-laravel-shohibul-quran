@@ -2,27 +2,25 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class KelasResource extends JsonResource
+class TahunAjaranResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'nama' => $this->nama,
-            'ruangan' => $this->ruangan,
+            'semester' => $this->semester,
+            'tahun' => $this->tahun,
             'full_name' => $this->full_name,
-            'wali_kelas' => new UserResource($this->whenLoaded('waliKelas')),
-            'tahun_ajaran' => new TahunAjaranResource($this->whenLoaded('tahunAjaran')),
             'is_active' => $this->is_active,
-            'siswa_count' => $this->siswa_count ?? null,
+            'kelas_count' => $this->when(isset($this->kelas_count), $this->kelas_count),
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
         ];

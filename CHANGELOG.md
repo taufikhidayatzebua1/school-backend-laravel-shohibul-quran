@@ -1,5 +1,88 @@
 # Release Notes
 
+## [v1.1.0] - 2025-10-19
+
+### 🎉 New Features
+* **Tabel Tahun Ajaran**: Menambahkan tabel baru `tahun_ajaran` untuk manajemen tahun ajaran
+  - Kolom: semester (Ganjil/Genap), tahun (YYYY/YYYY), is_active
+  - Soft delete support
+  - Hanya 1 tahun ajaran yang boleh aktif (enforced via Model Observer)
+* **API Endpoints Tahun Ajaran**: 
+  - `GET /api/v1/tahun-ajaran` - List all
+  - `GET /api/v1/tahun-ajaran/active` - Get active
+  - `POST /api/v1/tahun-ajaran` - Create
+  - `GET /api/v1/tahun-ajaran/{id}` - Show
+  - `PUT /api/v1/tahun-ajaran/{id}` - Update
+  - `POST /api/v1/tahun-ajaran/{id}/set-active` - Set as active
+  - `DELETE /api/v1/tahun-ajaran/{id}` - Delete
+* **Model TahunAjaran**: 
+  - Observer untuk auto-deactivate tahun ajaran lain saat set active
+  - Scope `active()` untuk query tahun ajaran aktif
+  - Accessor `full_name` untuk display (Semester Tahun)
+
+### 🔄 Changed
+* **Tabel Kelas - Breaking Changes**:
+  - `nama_kelas` → `nama` (nullable)
+  - Tambah kolom `ruangan` (nullable)
+  - `tahun_ajaran` (string) → `tahun_ajaran_id` (foreign key, nullable)
+  - Tambah `is_active` (boolean, default: true)
+  - Tambah `deleted_at` (soft delete)
+  - `wali_kelas_id` sekarang nullable
+* **Model Kelas**:
+  - Relasi baru ke TahunAjaran
+  - Scope `active()` untuk filter kelas aktif
+  - Accessor `full_name` untuk display (Nama - Ruang X)
+* **API Response Format** - Breaking Changes:
+  - KelasResource: `nama_kelas` → `nama`, tambah `ruangan`, `full_name`, `tahun_ajaran` (object), `is_active`
+  - SiswaPublicResource: `nama_kelas` → `nama`, tambah `ruangan`
+
+### 📝 Updated
+* **Controllers**: 
+  - KelasController: Update eager loading untuk tahunAjaran
+  - SiswaController: Update select columns (nama_kelas → nama)
+  - HafalanController: Update eager loading
+  - PublicKelasController: Update untuk public API
+  - PublicSiswaController: Update untuk public API
+* **Validation**:
+  - StoreKelasRequest: Update rules untuk kolom baru
+  - UpdateKelasRequest: Update rules untuk kolom baru
+  - StoreTahunAjaranRequest: Validasi create tahun ajaran
+  - UpdateTahunAjaranRequest: Validasi update tahun ajaran
+* **Seeders**:
+  - TahunAjaranSeeder: Seeder baru dengan 5 tahun ajaran
+  - KelasSeeder: Update dengan ruangan dan tahun_ajaran_id
+  - DatabaseSeeder: Update urutan seeding
+
+### 🛠️ Technical
+* **Migrations**:
+  - `2025_10_15_134630_create_tahun_ajaran_table.php`
+  - `2025_10_15_134635_create_kelas_table.php` (updated)
+  - Migration order fixed: tahun_ajaran → kelas → siswa
+* **Indexes**: Ditambahkan index pada `is_active` dan `tahun_ajaran_id` untuk performance
+* **Resources**:
+  - TahunAjaranResource: Resource baru
+  - KelasResource: Update dengan tahun ajaran relationship
+  - KelasPublicResource: Update
+  - SiswaPublicResource: Update
+
+### 📚 Documentation
+* `MIGRATION_GUIDE.md`: Panduan lengkap migrasi
+* `SUMMARY_CHANGES.md`: Summary semua perubahan
+* `test_database_structure.php`: Test script untuk validasi
+
+### ✅ Best Practices Implemented
+* Soft Delete untuk audit trail
+* Nullable columns untuk fleksibilitas
+* Foreign key relationships dengan proper constraints
+* Model Observer untuk business logic
+* Scope untuk query filtering
+* Accessor untuk computed values
+* Proper validation rules dengan custom messages
+* Index untuk performance optimization
+* Resource transformers untuk API consistency
+
+---
+
 ## [Unreleased](https://github.com/laravel/laravel/compare/v12.6.0...12.x)
 
 ## [v12.6.0](https://github.com/laravel/laravel/compare/v12.5.0...v12.6.0) - 2025-10-02

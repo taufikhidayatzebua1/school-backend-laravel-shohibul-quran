@@ -14,9 +14,25 @@ class StoreKelasRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_kelas' => 'required|string|max:255',
-            'wali_kelas_id' => 'required|exists:guru,id',
-            'tahun_ajaran' => 'required|string|max:9',
+            'nama' => 'required|string|max:255',
+            'ruangan' => 'nullable|string|max:100',
+            'wali_kelas_id' => 'nullable|exists:guru,id',
+            'tahun_ajaran_id' => 'nullable|exists:tahun_ajaran,id',
+            'is_active' => 'nullable|boolean',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     */
+    public function attributes(): array
+    {
+        return [
+            'nama' => 'nama kelas',
+            'ruangan' => 'ruangan',
+            'wali_kelas_id' => 'wali kelas',
+            'tahun_ajaran_id' => 'tahun ajaran',
+            'is_active' => 'status aktif',
         ];
     }
 }

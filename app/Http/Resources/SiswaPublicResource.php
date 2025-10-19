@@ -24,7 +24,8 @@ class SiswaPublicResource extends JsonResource
             'is_active' => $this->is_active,
             'kelas' => [
                 'id' => $this->kelas->id ?? null,
-                'nama_kelas' => $this->kelas->nama_kelas ?? null,
+                'nama' => $this->kelas->nama ?? null,
+                'ruangan' => $this->kelas->ruangan ?? null,
             ],
             'hafalan_count' => $this->hafalan_count ?? null,
         ];

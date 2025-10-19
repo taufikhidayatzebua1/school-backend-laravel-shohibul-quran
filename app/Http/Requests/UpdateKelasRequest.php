@@ -14,9 +14,25 @@ class UpdateKelasRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_kelas' => 'sometimes|string|max:255',
-            'wali_kelas_id' => 'sometimes|exists:guru,id',
-            'tahun_ajaran' => 'sometimes|string|max:9',
+            'nama' => 'sometimes|string|max:255',
+            'ruangan' => 'nullable|string|max:100',
+            'wali_kelas_id' => 'nullable|exists:guru,id',
+            'tahun_ajaran_id' => 'nullable|exists:tahun_ajaran,id',
+            'is_active' => 'nullable|boolean',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     */
+    public function attributes(): array
+    {
+        return [
+            'nama' => 'nama kelas',
+            'ruangan' => 'ruangan',
+            'wali_kelas_id' => 'wali kelas',
+            'tahun_ajaran_id' => 'tahun ajaran',
+            'is_active' => 'status aktif',
         ];
     }
 }

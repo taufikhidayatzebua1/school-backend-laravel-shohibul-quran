@@ -16,8 +16,10 @@ class KelasPublicResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nama_kelas' => $this->nama_kelas,
-            'tahun_ajaran' => $this->tahun_ajaran,
+            'nama' => $this->nama,
+            'ruangan' => $this->ruangan,
+            'full_name' => $this->full_name,
+            'tahun_ajaran' => new TahunAjaranResource($this->whenLoaded('tahunAjaran')),
             'siswa_count' => $this->siswa_count ?? null,
         ];
     }

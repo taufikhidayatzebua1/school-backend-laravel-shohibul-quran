@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Public\PublicSiswaController;
 use App\Http\Controllers\HafalanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\TahunAjaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,17 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
 
         // Protected routes with role check (guru, kepala-sekolah, admin, super-admin)
         Route::middleware('role:guru,kepala-sekolah,admin,super-admin')->group(function () {
+            // Tahun Ajaran routes (with authentication and role check)
+            Route::prefix('tahun-ajaran')->group(function () {
+                Route::get('/', [TahunAjaranController::class, 'index']);
+                Route::get('/active', [TahunAjaranController::class, 'active']);
+                Route::post('/', [TahunAjaranController::class, 'store']);
+                Route::get('/{id}', [TahunAjaranController::class, 'show']);
+                Route::put('/{id}', [TahunAjaranController::class, 'update']);
+                Route::post('/{id}/set-active', [TahunAjaranController::class, 'setActive']);
+                Route::delete('/{id}', [TahunAjaranController::class, 'destroy']);
+            });
+
             // Hafalan routes (with authentication and role check)
             Route::prefix('hafalan')->group(function () {
                 Route::get('/', [HafalanController::class, 'index']);

@@ -31,7 +31,7 @@ class PublicSiswaController extends Controller
             ], 422);
         }
 
-        $query = Siswa::with(['kelas:id,nama_kelas'])
+        $query = Siswa::with(['kelas:id,nama,ruangan'])
             ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id')
             ->withCount('hafalan');
 
@@ -74,7 +74,7 @@ class PublicSiswaController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $siswa = Siswa::with(['kelas:id,nama_kelas'])
+        $siswa = Siswa::with(['kelas:id,nama,ruangan'])
             ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id')
             ->withCount('hafalan')
             ->find($id);

@@ -17,9 +17,10 @@ class PublicKelasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $kelas = Kelas::select('id', 'nama_kelas', 'tahun_ajaran')
+        $kelas = Kelas::select('id', 'nama', 'ruangan', 'tahun_ajaran_id')
+            ->with('tahunAjaran:id,semester,tahun')
             ->withCount('siswa')
-            ->orderBy('nama_kelas')
+            ->orderBy('nama')
             ->get();
 
         return response()->json([
@@ -34,7 +35,9 @@ class PublicKelasController extends Controller
      */
     public function getSiswa($kelasId, Request $request): JsonResponse
     {
-        $kelas = Kelas::select('id', 'nama_kelas', 'tahun_ajaran')->find($kelasId);
+        $kelas = Kelas::select('id', 'nama', 'ruangan', 'tahun_ajaran_id')
+            ->with('tahunAjaran:id,semester,tahun')
+            ->find($kelasId);
 
         if (!$kelas) {
             return response()->json([
@@ -63,7 +66,8 @@ class PublicKelasController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $kelas = Kelas::select('id', 'nama_kelas', 'tahun_ajaran')
+        $kelas = Kelas::select('id', 'nama', 'ruangan', 'tahun_ajaran_id')
+            ->with('tahunAjaran:id,semester,tahun')
             ->withCount('siswa')
             ->find($id);
 

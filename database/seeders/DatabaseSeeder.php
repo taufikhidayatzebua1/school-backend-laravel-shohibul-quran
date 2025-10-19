@@ -16,16 +16,18 @@ class DatabaseSeeder extends Seeder
      * Urutan seeder yang benar:
      * 1. GuruSeeder - Membuat guru, wali-kelas, kepala-sekolah (semua masuk tabel guru)
      * 2. OtherRolesSeeder - Membuat admin, super-admin, tata-usaha, yayasan, orang-tua
-     * 3. KelasSeeder - Membuat kelas (bergantung pada guru untuk wali_kelas_id)
-     * 4. SiswaSeeder - Membuat siswa (bergantung pada kelas)
-     * 5. HafalanSeeder - Membuat hafalan (bergantung pada siswa dan guru)
-     * 6. TestingUserSeeder - Membuat user testing khusus (ada di siswa & guru)
+     * 3. TahunAjaranSeeder - Membuat tahun ajaran (bergantung pada GuruSeeder)
+     * 4. KelasSeeder - Membuat kelas (bergantung pada guru untuk wali_kelas_id dan tahun_ajaran)
+     * 5. SiswaSeeder - Membuat siswa (bergantung pada kelas)
+     * 6. HafalanSeeder - Membuat hafalan (bergantung pada siswa dan guru)
+     * 7. TestingUserSeeder - Membuat user testing khusus (ada di siswa & guru)
      */
     public function run(): void
     {
         $this->call([
             GuruSeeder::class,
             OtherRolesSeeder::class,
+            TahunAjaranSeeder::class,
             KelasSeeder::class,
             SiswaSeeder::class,
             HafalanSeeder::class,

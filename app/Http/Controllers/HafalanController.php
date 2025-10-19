@@ -21,7 +21,7 @@ class HafalanController extends Controller
         // Include siswa.kelas for kelas information
         $query = Hafalan::with([
             'siswa.user:id,email',
-            'siswa.kelas:id,nama_kelas,wali_kelas_id,tahun_ajaran',
+            'siswa.kelas:id,nama,ruangan,wali_kelas_id,tahun_ajaran_id',
             'guru:id,user_id,nip,nama,jenis_kelamin,no_hp'
         ]);
 
