@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Public\PublicKelasController;
 use App\Http\Controllers\Api\Public\PublicSiswaController;
 use App\Http\Controllers\HafalanController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\UserController;
@@ -120,6 +121,15 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
                 Route::get('/{id}', [SiswaController::class, 'show']);
                 Route::get('/{id}/hafalan', [SiswaController::class, 'getHafalan']);
                 Route::get('/{id}/statistics', [SiswaController::class, 'getStatistics']);
+            });
+
+            // Orang Tua routes (with authentication and role check)
+            Route::prefix('orang-tua')->group(function () {
+                Route::get('/', [OrangTuaController::class, 'index']);
+                Route::post('/', [OrangTuaController::class, 'store']);
+                Route::get('/{id}', [OrangTuaController::class, 'show']);
+                Route::put('/{id}', [OrangTuaController::class, 'update']);
+                Route::delete('/{id}', [OrangTuaController::class, 'destroy']);
             });
         });
     });
