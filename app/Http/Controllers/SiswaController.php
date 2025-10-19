@@ -104,63 +104,62 @@ class SiswaController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-    $validator = Validator::make($request->all(), [
-            'page' => 'sometimes|integer|min:1',
-            'per_page' => 'sometimes|integer|min:1|max:100',
-            'search' => 'sometimes|string|max:255',
-            'kelas_id' => 'sometimes|integer|exists:kelas,id',
-            'sort_by' => 'sometimes|in:nama,nis,tanggal_lahir',
-            'sort_order' => 'sometimes|in:asc,desc',
-        ]);
+        $validator = Validator::make($request->all(), [
+                'page' => 'sometimes|integer|min:1',
+                'per_page' => 'sometimes|integer|min:1|max:100',
+                'search' => 'sometimes|string|max:255',
+                'kelas_id' => 'sometimes|integer|exists:kelas,id',
+                'sort_by' => 'sometimes|in:nama,nis,tanggal_lahir',
+                'sort_order' => 'sometimes|in:asc,desc',
+            ]);
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Parameter tidak valid',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $query = Siswa::with(['kelas:id,nama,ruangan']);
+
+            if ($request->filled('kelas_id')) {
+                $query->where('kelas_id', $request->kelas_id);
+            }
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function($q) use ($search) {
+                    $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nis', 'like', "%{$search}%");
+                });
+            }
+
+            // Sorting
+            $sortBy = $request->input('sort_by', 'nama');
+            $sortOrder = $request->input('sort_order', 'asc');
+            $query->orderBy($sortBy, $sortOrder);
+
+            $perPage = $request->get('per_page', 15);
+            $siswa = $query->paginate($perPage);
+
             return response()->json([
-                'success' => false,
-                'message' => 'Parameter tidak valid',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $query = Siswa::with(['kelas:id,nama,ruangan']);
-
-        if ($request->filled('kelas_id')) {
-            $query->where('kelas_id', $request->kelas_id);
-        }
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nis', 'like', "%{$search}%");
-            });
-        }
-
-        // Sorting
-        if ($request->filled('sort_by')) {
-            $sortOrder = $request->get('sort_order', 'asc');
-            $query->orderBy($request->sort_by, $sortOrder);
-        }
-
-        $perPage = $request->get('per_page', 15);
-        $siswa = $query->paginate($perPage);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data siswa berhasil diambil',
-            'data' => SiswaResource::collection($siswa),
-            'meta' => [
-                'current_page' => $siswa->currentPage(),
-                'total' => $siswa->total(),
-                'per_page' => $siswa->perPage(),
-                'last_page' => $siswa->lastPage(),
-            ],
-            'links' => [
-                'first' => $siswa->url(1),
-                'last' => $siswa->url($siswa->lastPage()),
-                'prev' => $siswa->previousPageUrl(),
-                'next' => $siswa->nextPageUrl(),
-            ]
-        ]);
+                'success' => true,
+                'message' => 'Data siswa berhasil diambil',
+                'data' => SiswaResource::collection($siswa),
+                'meta' => [
+                    'current_page' => $siswa->currentPage(),
+                    'total' => $siswa->total(),
+                    'per_page' => $siswa->perPage(),
+                    'last_page' => $siswa->lastPage(),
+                ],
+                'links' => [
+                    'first' => $siswa->url(1),
+                    'last' => $siswa->url($siswa->lastPage()),
+                    'prev' => $siswa->previousPageUrl(),
+                    'next' => $siswa->nextPageUrl(),
+                ]
+            ]);
     }
 
     /**

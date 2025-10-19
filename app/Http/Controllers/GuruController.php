@@ -19,6 +19,25 @@ class GuruController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        // Validate request parameters
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'page' => 'sometimes|integer|min:1',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+            'search' => 'sometimes|string|max:255',
+            'is_active' => 'sometimes|boolean',
+            'role' => 'sometimes|in:guru,wali-kelas,kepala-sekolah',
+            'sort_by' => 'sometimes|in:nama,nip,tempat_lahir,tanggal_lahir',
+            'sort_order' => 'sometimes|in:asc,desc',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Parameter tidak valid',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         $query = Guru::query();
 
         // Filter by is_active
@@ -44,8 +63,8 @@ class GuruController extends Controller
         }
 
         // Sorting
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
+        $sortBy = $request->input('sort_by', 'nama');
+        $sortOrder = $request->input('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
         // Pagination
