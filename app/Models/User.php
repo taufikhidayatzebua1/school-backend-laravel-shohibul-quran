@@ -41,6 +41,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'role' => 'siswa',
+        'is_active' => true,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

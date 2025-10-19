@@ -26,12 +26,18 @@ class AuthController extends Controller
      */
     public function register(StoreUserRequest $request)
     {
-        $user = User::create([
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        ];
+
+        // Hanya tambahkan role jika dikirim, jika tidak akan pakai default 'siswa' dari database
+        if ($request->filled('role')) {
+            $userData['role'] = $request->role;
+        }
+
+        $user = User::create($userData);
 
         $token = $user->createToken('auth_token')->plainTextToken;
         $expiresIn = config('sanctum.expiration') ? config('sanctum.expiration') * 60 : null; // seconds

@@ -18,8 +18,18 @@ class UpdateUserRequest extends FormRequest
             'username' => 'sometimes|string|max:255|unique:users,username,' . $this->user . '|regex:/^[a-zA-Z0-9_]+$/',
             'email' => 'sometimes|string|email|max:255|unique:users,email,' . $this->user,
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'sometimes|in:siswa,orang-tua,guru,wali-kelas,kepala-sekolah,tata-usaha,yayasan,admin,super-admin',
-            'is_active' => 'sometimes|boolean',
+            'role' => 'nullable|in:siswa,orang-tua,guru,wali-kelas,kepala-sekolah,tata-usaha,yayasan,admin,super-admin',
+            'is_active' => 'nullable|boolean',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'role.in' => 'Role yang dipilih tidak valid. Pilihan: siswa, orang-tua, guru, wali-kelas, kepala-sekolah, tata-usaha, yayasan, admin, super-admin.',
         ];
     }
 }
