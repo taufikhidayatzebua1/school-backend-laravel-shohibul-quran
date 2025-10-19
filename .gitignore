@@ -1,8 +1,10 @@
+# Laravel
 *.log
 .DS_Store
 .env
 .env.backup
 .env.production
+.env.local
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -22,3 +24,56 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+npm-debug.log
+yarn-error.log
+
+# Storage
+/storage/app/*
+!/storage/app/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Private/Sensitive Files
+*.pem
+*.key
+*.cert
+*.crt
+.password
+secrets/
+private/
+
+# Database
+*.sqlite
+*.sqlite-journal
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.phpactor.json
+
+# Testing
+.phpunit.result.cache
+coverage/
+.php_cs.cache
+
+# Build
+/public/mix-manifest.json
+/public/js/
+/public/css/
