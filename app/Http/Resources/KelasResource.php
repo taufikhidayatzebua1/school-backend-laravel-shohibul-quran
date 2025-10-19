@@ -21,10 +21,10 @@ class KelasResource extends JsonResource
             'full_name' => $this->full_name,
             'wali_kelas' => new UserResource($this->whenLoaded('waliKelas')),
             'tahun_ajaran' => new TahunAjaranResource($this->whenLoaded('tahunAjaran')),
-            'is_active' => $this->is_active,
+            'is_active' => $this->is_active ?? null,
             'siswa_count' => $this->siswa_count ?? null,
-            'created_at' => $this->created_at?->toDateTimeString(),
-            'updated_at' => $this->updated_at?->toDateTimeString(),
+            'created_at' => $this->created_at ? $this->created_at->toDateTimeString() : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->toDateTimeString() : null,
         ];
     }
 }

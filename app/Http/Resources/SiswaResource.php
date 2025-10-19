@@ -16,7 +16,6 @@ class SiswaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new UserResource($this->whenLoaded('user')),
             'nis' => $this->nis,
             'nama' => $this->nama,
             'tempat_lahir' => $this->tempat_lahir,
@@ -28,12 +27,13 @@ class SiswaResource extends JsonResource
             'url_photo' => $this->url_photo,
             'url_cover' => $this->url_cover,
             'is_active' => $this->is_active,
-            'kelas' => new KelasResource($this->whenLoaded('kelas')),
-            'hafalan_count' => $this->hafalan_count ?? null,
-            'hafalan_stats' => $this->hafalan_stats ?? null,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'kelas' => $this->whenLoaded('kelas', function() {
+                return [
+                    'id' => $this->kelas->id,
+                    'nama' => $this->kelas->nama,
+                    'ruangan' => $this->kelas->ruangan,
+                ];
+            }),
         ];
     }
 }

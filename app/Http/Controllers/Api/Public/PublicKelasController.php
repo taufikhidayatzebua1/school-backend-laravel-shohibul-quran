@@ -48,7 +48,6 @@ class PublicKelasController extends Controller
 
         $siswa = Siswa::where('kelas_id', $kelasId)
             ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id')
-            ->withCount('hafalan')
             ->get();
 
         return response()->json([

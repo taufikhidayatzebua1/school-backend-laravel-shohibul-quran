@@ -45,25 +45,10 @@ class KelasController extends Controller
             ], 404);
         }
 
-        // Get siswa with hafalan count and statistics
+        // Get siswa basic info only
         $siswa = Siswa::where('kelas_id', $kelasId)
-            ->with(['user:id,email', 'hafalan.guru:id,nama,nip'])
-            ->select('id', 'user_id', 'nis', 'nama', 'jenis_kelamin', 'tanggal_lahir', 'alamat', 'kelas_id')
-            ->withCount('hafalan')
+            ->select('id', 'nis', 'nama', 'jenis_kelamin', 'tanggal_lahir', 'alamat', 'kelas_id')
             ->get();
-
-        // Add hafalan statistics for each siswa (use already eager loaded hafalan)
-        $siswa->each(function ($s) {
-            $s->hafalan_stats = [
-                'total' => $s->hafalan->count(),
-                'lancar' => $s->hafalan->where('status', 'lancar')->count(),
-                'perlu_bimbingan' => $s->hafalan->where('status', 'perlu bimbingan')->count(),
-                'mengulang' => $s->hafalan->where('status', 'mengulang')->count(),
-            ];
-            // Get latest hafalan date
-            $latestHafalan = $s->hafalan->sortByDesc('tanggal')->first();
-            $s->latest_hafalan_date = $latestHafalan ? $latestHafalan->tanggal : null;
-        });
 
         return response()->json([
             'success' => true,

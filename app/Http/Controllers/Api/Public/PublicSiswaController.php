@@ -32,8 +32,7 @@ class PublicSiswaController extends Controller
         }
 
         $query = Siswa::with(['kelas:id,nama,ruangan'])
-            ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id')
-            ->withCount('hafalan');
+            ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id');
 
         if ($request->filled('kelas_id')) {
             $query->where('kelas_id', $request->kelas_id);
@@ -76,7 +75,6 @@ class PublicSiswaController extends Controller
     {
         $siswa = Siswa::with(['kelas:id,nama,ruangan'])
             ->select('id', 'nis', 'nama', 'jenis_kelamin', 'kelas_id')
-            ->withCount('hafalan')
             ->find($id);
 
         if (!$siswa) {

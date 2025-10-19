@@ -20,7 +20,7 @@ class SiswaController extends Controller
      */
     public function getHafalan($siswaId): JsonResponse
     {
-        $siswa = Siswa::with(['kelas:id,nama,ruangan', 'user:id,email'])
+        $siswa = Siswa::with(['kelas:id,nama,ruangan'])
             ->find($siswaId);
 
         if (!$siswa) {
@@ -121,8 +121,7 @@ class SiswaController extends Controller
             ], 422);
         }
 
-        $query = Siswa::with(['kelas:id,nama,ruangan', 'user:id,email', 'hafalan.guru:id,nama,nip'])
-            ->withCount('hafalan');
+        $query = Siswa::with(['kelas:id,nama,ruangan']);
 
         if ($request->filled('kelas_id')) {
             $query->where('kelas_id', $request->kelas_id);
@@ -169,8 +168,7 @@ class SiswaController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $siswa = Siswa::with(['kelas', 'user'])
-            ->withCount('hafalan')
+        $siswa = Siswa::with(['kelas:id,nama,ruangan'])
             ->find($id);
 
         if (!$siswa) {
