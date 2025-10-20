@@ -8,6 +8,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserProfileResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -129,14 +130,34 @@ class AuthController extends Controller
     }
 
     /**
-     * Get authenticated user profile
+     * Get authenticated user profile with role-specific data
      */
     public function profile(Request $request)
     {
+        $user = $request->user();
+
+        // Eager load role-specific relations
+        switch ($user->role) {
+            case 'siswa':
+                $user->load('siswa.kelas');
+                break;
+            case 'orang-tua':
+                $user->load('orangTua');
+                break;
+            case 'guru':
+            case 'wali-kelas':
+            case 'kepala-sekolah':
+                $user->load('guru');
+                break;
+            default:
+                // tata-usaha, yayasan, admin, super-admin - no additional relations
+                break;
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'User profile retrieved successfully',
-            'data' => $request->user()
+            'data' => new UserProfileResource($user)
         ], 200);
     }
 
@@ -184,10 +205,25 @@ class AuthController extends Controller
 
         $user->save();
 
+        // Reload with role-specific relations
+        switch ($user->role) {
+            case 'siswa':
+                $user->load('siswa.kelas');
+                break;
+            case 'orang-tua':
+                $user->load('orangTua');
+                break;
+            case 'guru':
+            case 'wali-kelas':
+            case 'kepala-sekolah':
+                $user->load('guru');
+                break;
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Profile updated successfully',
-            'data' => $user
+            'data' => new UserProfileResource($user)
         ], 200);
     }
 

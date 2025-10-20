@@ -249,6 +249,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the orang tua record associated with the user.
+     * 
+     * One-to-One relationship
+     */
+    public function orangTua()
+    {
+        return $this->hasOne(OrangTua::class);
+    }
+
+    /**
      * Check if user is active
      */
     public function isActive(): bool
