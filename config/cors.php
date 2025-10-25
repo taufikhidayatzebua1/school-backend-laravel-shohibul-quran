@@ -32,6 +32,9 @@ return [
         // Add your production domains here:
         // 'https://yourdomain.com',
         // 'https://app.yourdomain.com',
+        'http://192.168.1.7:8100',   // ✅ Ionic live reload di emulator/device
+        'capacitor://localhost',      // ✅ Capacitor app (production build)
+        'ionic://localhost',          // ✅ Ionic app (alternative)
         'https://tools.livezet.id',
     ],
 
