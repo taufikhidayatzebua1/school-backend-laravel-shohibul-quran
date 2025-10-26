@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Public\PublicHafalanController;
 use App\Http\Controllers\Api\Public\PublicKelasController;
 use App\Http\Controllers\Api\Public\PublicSiswaController;
+use App\Http\Controllers\CustomPageController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HafalanController;
 use App\Http\Controllers\KelasController;
@@ -211,6 +212,24 @@ Route::prefix(config('api.version', 'v1'))->group(function () {
                 Route::post('/', [HafalanController::class, 'store']);
                 Route::put('/{id}', [HafalanController::class, 'update']);
                 Route::delete('/{id}', [HafalanController::class, 'destroy']);
+            });
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Custom Page Builder Management
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('custom-pages')->group(function () {
+            // Read Access (Based on role configuration in each page)
+            Route::get('/', [CustomPageController::class, 'index']);
+            Route::get('/{id}', [CustomPageController::class, 'show']);
+            
+            // Write Access (Admin & Super-admin only)
+            Route::middleware('role:admin,super-admin')->group(function () {
+                Route::post('/', [CustomPageController::class, 'store']);
+                Route::put('/{id}', [CustomPageController::class, 'update']);
+                Route::delete('/{id}', [CustomPageController::class, 'destroy']);
             });
         });
     });
