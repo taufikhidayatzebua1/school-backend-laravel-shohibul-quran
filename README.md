@@ -1,10 +1,10 @@
-# 🕌 SQ Backend - Hafalan Al-Quran Management API
+# 🕌 SQ Hafalan Backend - Hafalan Al-Quran Management API
 
-[![Laravel](https://img.shields.io/badge/Laravel-11-red.svg)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Backend API untuk sistem manajemen hafalan Al-Quran di sekolah/madrasah dengan Laravel 11, Laravel Sanctum, dan fitur production-ready.
+Backend API untuk sistem manajemen hafalan Al-Quran di sekolah/madrasah dengan Laravel 12, Laravel Sanctum, dan fitur production-ready.
 
 ## � Table of Contents
 

@@ -1,45 +1,106 @@
-# Laravel
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.env.local
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
+# Laravel & PHP
 /.phpunit.cache
-/.vscode
-/.zed
-/auth.json
 /node_modules
 /public/build
 /public/hot
 /public/storage
+/public/docs
 /storage/*.key
 /storage/pail
 /vendor
+.env
+.env.backup
+.env.production
+.env.local
+.env.testing
+.phpunit.result.cache
 Homestead.json
 Homestead.yaml
-Thumbs.db
+auth.json
 npm-debug.log
 yarn-error.log
+*.log
 
-# Storage
+# IDE & Editors
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+.DS_Store
+*.swp
+*.swo
+*~
+.project
+.buildpath
+.settings/
+.phpactor.json
+
+# Composer
+composer.phar
+/vendor/
+
+# Storage Directories
 /storage/app/*
 !/storage/app/.gitignore
+!/storage/app/public
 /storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
 !/storage/framework/cache/.gitignore
 /storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
 !/storage/framework/sessions/.gitignore
 /storage/framework/testing/*
+!/storage/framework/testing/.gitkeep
 !/storage/framework/testing/.gitignore
 /storage/framework/views/*
+!/storage/framework/views/.gitkeep
 !/storage/framework/views/.gitignore
 /storage/logs/*
+!/storage/logs/.gitkeep
 !/storage/logs/.gitignore
+bootstrap/cache/*.php
+!bootstrap/cache/.gitkeep
+!bootstrap/cache/.gitignore
+
+# Database
+*.sqlite
+*.sqlite-journal
+*.sql
+
+# Testing
+.phpunit.cache/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+package-lock.json
+
+# Scribe Documentation (generated)
+.scribe/
+/public/docs/
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
 
 # Private/Sensitive Files
 *.pem
@@ -48,6 +109,11 @@ yarn-error.log
 *.crt
 .password
 secrets/
+
+# Backup files
+*.bak
+*.backup
+*.old
 private/
 
 # Database
