@@ -589,7 +589,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Authors
 
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
+- **Taufik Hidayat Zebua**
 
 ## � Acknowledgments
 
@@ -609,7 +609,5 @@ For support, email support@example.com or open an issue in the repository.
 - **Request Feature:** [Feature Requests](https://github.com/yourusername/sq-backend/issues)
 
 ---
-
-**Built with ❤️ using Laravel 11 & Laravel Sanctum**
 
 **For Islamic Education 🕌**
